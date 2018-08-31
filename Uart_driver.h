@@ -1,8 +1,7 @@
-#define FOSC 4915200 //clock speed
-#define BAUD 9600
+#include <stdio.h>
 
 void uart_init(unsigned int pin);
 
-void uart_transmit(uint8_t data);
+int uart_transmit(char data,FILE* fil);
 
-uint8_t uart_recieve();
+int uart_recieve(FILE* fil);
