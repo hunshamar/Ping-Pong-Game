@@ -24,8 +24,9 @@ entity address_decoder is
     attribute LOC of a8      : signal is "P4";
 end address_decoder;
 
-architecture behave of address_decoder is begin
+architecture behave of address_decoder is
+begin
     ram_cs <= (NOT a11);
-    adc_cs <= ((NOT a10) OR ( a11))
-    oled_cs <= (a10 OR a11) 
-end behave
+    adc_cs <= ((NOT a10) OR ( a11));
+    oled_cs <= (a10 OR a11) ;
+end behave;

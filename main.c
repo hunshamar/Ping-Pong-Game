@@ -18,15 +18,12 @@ int main(){
     //uart_recieve();
     
     printf("HEI \n\r");
-    MCUCR |= (1<<SRE);
+    MCUCR = (1<<SRE);
+    SFIOR = (1<<XMM2);
     printf(" SVEIS ");
     _delay_ms(2000);
     SRAM_test();
     _delay_ms(3000);
-    for (int i = 0; i < 100; i++){
-        printf("%d ", i);
-        _delay_ms(10);
-    }
     /*
     while(1){a
         char letter = 0;
@@ -57,7 +54,5 @@ int main(){
         PORTB = (0 << PB1);
         _delay_ms(1000);
     }*/
-
-
     return 0;
 }
