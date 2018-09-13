@@ -8,6 +8,7 @@
 #include "Uart_driver.h"
 #include <util/delay.h>
 #include "SRAM.h"
+#include "adc_driver.h"
 
 int main(){
     
@@ -20,10 +21,11 @@ int main(){
     printf("HEI \n\r");
     MCUCR = (1<<SRE);
     SFIOR = (1<<XMM2);
-    printf(" SVEIS ");
-    _delay_ms(2000);
-    SRAM_test();
-    _delay_ms(3000);
+    adc_test();
+    //printf(" SVEIS ");
+    //_delay_ms(2000);
+    //SRAM_test();
+    //_delay_ms(3000);
     /*
     while(1){a
         char letter = 0;
