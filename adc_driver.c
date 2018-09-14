@@ -1,13 +1,19 @@
-#include <stdlib.h>
-#include<stdint.h>
 #include <stdio.h>
+#include <avr/io.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <util/delay.h>
 #include "adc_driver.h"
 
-void adc_test(){
-    volatile char *ext_adc = (char *) 0b010000000000; // Start address for the ADC
-    *ext_adc = 50;
-    printf("Checking ADC chip select. Does the diode turn off?");
-    while(1){
-        uint8_t some_value = ext_adc[0];
-    }
+uint8_t read_channel(adc_channel_t channel){
+    volatile char* adc_channel = (char * ) 0x1400;
+
+    //By sending this to ADC we check single-ended voltage diff on selected channel
+    adc_channel[0] = channel;
+
+    //Waiting for ADC to sample
+    _delay_ms(20);
+
+    //Retrieving value from ADC
+    uint8_t retrieved_value = adc_channel[0];
 }
