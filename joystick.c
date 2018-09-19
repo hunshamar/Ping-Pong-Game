@@ -1,3 +1,6 @@
+
+
+
 #include "adc_driver.h"
 #include "joystick.h"
 
@@ -27,26 +30,43 @@ int get_joy_coords_y(coord_sample offset){
     return y_coord;
 }
 
-direction get_direction(int x, int y){
-    direction where;
-    if (x <= 10 && x >= -10){
-        where.x = NEUTRAL;
-    }
-    else if(x > 0){
-        where.x = RIGHT;
-    }
-    else if(x > 0 ){
-        where.x = LEFT;
+
+
+int get_angle(double x,double y){
+
+    if (y == 0){
+        y = 0.000001;
     }
 
-    if(y <= 10 && y >= -10){
-        where.y = NEUTRAL;
-    }  
-    else if(y > 0){
-        where.y = RIGHT;
+    int angle = atan(y/x) * 180 / 3.14159265;
+
+    if (x < 0){
+        angle += 180;
     }
-    else if(y > 0 ){
-        where.y = LEFT;
+    if (angle < 0){
+        angle += 360;
     }
-    return where;
+    return angle;
 }
+
+
+dir get_direction(int x, int y){
+    direction where;
+
+    if (x < 3 && x > -3 && y < 3 && y > -3)
+        return NEUTRAL;
+
+    int angle = get_angle(x,y);
+
+    if ((angle <= 360 && angle >= 315) || (angle >= 0 && angle <= 45))
+        return RIGHT;
+    if (angle > 45 && angle < 135)
+        return UP;
+    if (angle >= 135 && angle <= 225)
+        return LEFT;
+    if (angle > 225 && angle < 315)
+        return DOWN;
+    else
+        return NEUTRAL;
+}
+

@@ -28,8 +28,11 @@ int main(){
     //direction where = get_direction(get_joy_coords_x,get_joy_coords_y);
     while(1){
         //printf("Joystick. X = %d  Y= %d  \n\r", get_joy_coords_x(cs), get_joy_coords_y(cs));
-        printf("Direction is: %d and %d  \n\r", get_direction(get_joy_coords_x,get_joy_coords_y).x, get_direction(get_joy_coords_x,get_joy_coords_y).y);
-        _delay_ms(200);
+
+        printf("Angle: %d \n\r", get_angle(get_joy_coords_x(cs), get_joy_coords_y(cs)));
+
+        //printf("Direction is: %s\n\r", get_direction(get_joy_coords_x(cs), get_joy_coords_y(cs)));
+        _delay_ms(100);
     }
 
     //adc_test();
