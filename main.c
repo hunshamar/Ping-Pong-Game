@@ -24,7 +24,6 @@ int main(){
     SFIOR = (1<<XMM2);
 
     oled_clear();
-    oled_fill();
     //uart_transmit(8);
     //uart_recieve();
     
@@ -38,7 +37,6 @@ int main(){
 
 
         //oled_write_to_pixel(20,20);
-        oled_clear();
 
         _delay_ms(100);
 
@@ -69,17 +67,11 @@ int main(){
         printf("Direction is: %s\n\r", dir_to_string(get_direction(x,y)));   //(get_joy_coords_x(cs), get_joy_coords_y(cs)));
 
         */
+
+        OLED_write_string("hei! ");
         
         _delay_ms(100);  // {0b01111100,0b01111110,0b00010011,0b00010011,0b01111110,0b01111100,0b00000000,0b00000000}
 
-        oled_write_data(0,0b01111100);
-        oled_write_data(1,0b01111110);
-        oled_write_data(2,0b00010011);
-        oled_write_data(3,0b00010011);
-        oled_write_data(4,0b01111110);
-        oled_write_data(5,0b01111100); //A
-        oled_write_data(6,0b00000000);
-        oled_write_data(7,0b00000000);
      
         _delay_ms(100);
     }

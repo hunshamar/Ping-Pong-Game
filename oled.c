@@ -14,12 +14,22 @@ void oled_write_data(int channel, int data){
     
 }
 
-void OLED_write_char(uint8_t character) {
-	uint16_t bufferIndex = 0;
-	for (uint16_t col = 0; col < 8; col++) {
-		oled_data_channel[col + 1 + (128 * 1)] = pgm_read_byte(font8[character - 32] + bufferIndex);
-		bufferIndex += sizeof(uint8_t);
-	}
+void OLED_write_char(uint8_t character){
+
+    for (int i = 0; i < 8; i++){
+
+        oled_data_channel[0] = pgm_read_byte(&font8[character-32][i]);
+    }
+
+}
+
+void OLED_write_string(char* s){
+    int i= 0;
+    while(s[i] != 0){
+        OLED_write_char(s[i]);
+        i++;
+    }
+
 }
 
 void oled_clear(){
