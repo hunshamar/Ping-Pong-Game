@@ -14,14 +14,7 @@ typedef enum dir{
     NEUTRAL,
 } dir;
 
-char* dir_to_string(dir d){
-    if (d == 0) return "R";
-    if (d == 1) return "L";
-    if (d == 2) return "U";
-    if (d == 3) return "D";
-    if (d == 4) return "N";
-    else return "error";
-}
+char* dir_to_string(dir d);
 
 typedef struct direction{
     dir x;
@@ -36,10 +29,14 @@ typedef struct coord_sample {
 
 coord_sample joy_init();
 
-int get_angle(double x, double y);
+int get_angle(int x, int y);
 
 dir get_direction(int x, int y);
 
 int get_joy_coords_x(coord_sample offset);
 int get_joy_coords_y(coord_sample offset);
+
+int get_left_slider_pos();
+int get_right_slider_pos();
+
 #endif

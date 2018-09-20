@@ -11,6 +11,9 @@
 #include "adc_driver.h"
 #include <util/delay.h>
 #include "joystick.h"
+#include "oled.h"
+
+
 
 int main(){
     
@@ -19,26 +22,72 @@ int main(){
     uart_init(9600);
     MCUCR = (1<<SRE);
     SFIOR = (1<<XMM2);
-    
+
+    oled_clear();
+    oled_fill();
     //uart_transmit(8);
     //uart_recieve();
     
     printf("HEI \n\r");
     coord_sample cs = joy_init();
     //direction where = get_direction(get_joy_coords_x,get_joy_coords_y);
+    
+    oled_init();
+
     while(1){
-        //printf("Joystick. X = %d  Y= %d  \n\r", get_joy_coords_x(cs), get_joy_coords_y(cs));
 
-        printf("Angle: %d \n\r", get_angle(get_joy_coords_x(cs), get_joy_coords_y(cs)));
 
-        //printf("Direction is: %s\n\r", get_direction(get_joy_coords_x(cs), get_joy_coords_y(cs)));
+        //oled_write_to_pixel(20,20);
+        oled_clear();
+
+        _delay_ms(100);
+
+        /*
+        for (int i = 0; i<64;i++){
+            _delay_ms(20);
+            oled_write_data(i,0x00);
+        }
+
+        for (int i = 64; i<128;i++){
+            _delay_ms(20);
+            oled_write_data(i,0xFF);
+        }*/
+
+        /*
+        int x =  get_joy_coords_x(cs);
+        int y =  get_joy_coords_y(cs);
+
+        printf("slider pos: %d\n\r", get_right_slider_pos());
+
+        
+        printf("Joystick. X = %d  Y= %d     ", x, y);
+
+
+
+        printf("Angle: %d   ", get_angle(x, y));
+
+        printf("Direction is: %s\n\r", dir_to_string(get_direction(x,y)));   //(get_joy_coords_x(cs), get_joy_coords_y(cs)));
+
+        */
+        
+        _delay_ms(100);  // {0b01111100,0b01111110,0b00010011,0b00010011,0b01111110,0b01111100,0b00000000,0b00000000}
+
+        oled_write_data(0,0b01111100);
+        oled_write_data(1,0b01111110);
+        oled_write_data(2,0b00010011);
+        oled_write_data(3,0b00010011);
+        oled_write_data(4,0b01111110);
+        oled_write_data(5,0b01111100); //A
+        oled_write_data(6,0b00000000);
+        oled_write_data(7,0b00000000);
+     
         _delay_ms(100);
     }
 
     //adc_test();
     //printf(" SVEIS ");
     //_delay_ms(2000);
-    //SRAM_test();
+    SRAM_test();
     //_delay_ms(3000);
     /*
     while(1){a

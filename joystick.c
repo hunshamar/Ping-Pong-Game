@@ -30,15 +30,27 @@ int get_joy_coords_y(coord_sample offset){
     return y_coord;
 }
 
+char* dir_to_string(dir d){
+    if (d == 0) return "R";
+    if (d == 1) return "L";
+    if (d == 2) return "U";
+    if (d == 3) return "D";
+    if (d == 4) return "N";
+    else return "error";
+}
 
 
-int get_angle(double x,double y){
 
+int get_angle(int x,int y){
+
+    
     if (y == 0){
-        y = 0.000001;
+        double y = 0.000001;
     }
 
-    int angle = atan(y/x) * 180 / 3.14159265;
+    int angle = atan(((double)(y))/((double)(x))) * 180 / 3.14159265;
+
+    
 
     if (x < 0){
         angle += 180;
@@ -68,5 +80,15 @@ dir get_direction(int x, int y){
         return DOWN;
     else
         return NEUTRAL;
+}
+
+
+int get_left_slider_pos(){
+    return ((double)(read_channel(CHANNEL_3)))*100/255.0;
+}
+
+
+int get_right_slider_pos(){    
+    return ((double)(read_channel(CHANNEL_4)))*100/255.0;
 }
 
