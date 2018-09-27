@@ -9,9 +9,9 @@
 #include <util/delay.h>
 #include "SRAM.h"
 #include "adc_driver.h"
-#include <util/delay.h>
 #include "joystick.h"
 #include "oled.h"
+#include "menu.h"
 
 
 
@@ -23,7 +23,6 @@ int main(){
     MCUCR = (1<<SRE);
     SFIOR = (1<<XMM2);
 
-    oled_clear();
     //uart_transmit(8);
     //uart_recieve();
     
@@ -33,12 +32,17 @@ int main(){
     
     oled_init();
 
+
+    menu();
+
     while(1){
 
 
         //oled_write_to_pixel(20,20);
 
         _delay_ms(100);
+
+        printf("joystick: %d, \n\r", get_joystick_button_status());
 
         /*
         for (int i = 0; i<64;i++){
@@ -67,13 +71,9 @@ int main(){
         printf("Direction is: %s\n\r", dir_to_string(get_direction(x,y)));   //(get_joy_coords_x(cs), get_joy_coords_y(cs)));
 
         */
-
-        OLED_write_string("hei! ");
-        
-        _delay_ms(100);  // {0b01111100,0b01111110,0b00010011,0b00010011,0b01111110,0b01111100,0b00000000,0b00000000}
+         // {0b01111100,0b01111110,0b00010011,0b00010011,0b01111110,0b01111100,0b00000000,0b00000000}
 
      
-        _delay_ms(100);
     }
 
     //adc_test();

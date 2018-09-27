@@ -6,6 +6,7 @@
 
 
 
+
 coord_sample joy_init(){
     coord_sample offset;
     offset.x = read_channel(CHANNEL_1);
@@ -65,7 +66,7 @@ int get_angle(int x,int y){
 dir get_direction(int x, int y){
     direction where;
 
-    if (x < 3 && x > -3 && y < 3 && y > -3)
+    if (x < 80 && x > -80 && y < 80 && y > -80)
         return NEUTRAL;
 
     int angle = get_angle(x,y);
@@ -92,3 +93,25 @@ int get_right_slider_pos(){
     return ((double)(read_channel(CHANNEL_4)))*100/255.0;
 }
 
+int get_left_button_status(){
+
+    if (bit_is_set(PINB, PB0))
+        return 1;
+    else    
+        return 0;
+}
+
+int get_right_button_status(){
+
+    if (bit_is_set(PINB, PB1))
+        return 1;
+    else    
+        return 0;
+}
+
+int get_joystick_button_status(){
+    if (bit_is_set(PINB, PB2))
+        return 0; //active low
+    else    
+        return 1;
+}

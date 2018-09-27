@@ -6,12 +6,13 @@
 #include <avr/pgmspace.h>
 
 
-void OLED_write_char(uint8_t character);
+void oled_write_char(uint8_t character);
 void oled_write_data(int channel, int data);
 void write_command(uint8_t command);
 void oled_init();
 void oled_clear();
 void oled_fill();
+void oled_print(char* s);
 
 
 int get_line(int y);

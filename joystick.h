@@ -5,13 +5,15 @@
 #include<math.h>
 #include<string.h>
 
+#include <avr/io.h>
 
 typedef enum dir{
+    NEUTRAL,
     RIGHT,
     LEFT,
-    UP,
-    DOWN,
-    NEUTRAL,
+    UP, //2
+    DOWN, //3
+    
 } dir;
 
 char* dir_to_string(dir d);
@@ -38,5 +40,9 @@ int get_joy_coords_y(coord_sample offset);
 
 int get_left_slider_pos();
 int get_right_slider_pos();
+
+
+int get_left_button_status();
+int get_right_button_status();
 
 #endif

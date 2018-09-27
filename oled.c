@@ -1,5 +1,9 @@
 #include "oled.h"
 
+int line = 0;
+
+
+
 
 volatile char* oled_command_channel = (char * ) 0x1000;
 volatile char* oled_data_channel = (char * ) 0x1200;
@@ -14,7 +18,7 @@ void oled_write_data(int channel, int data){
     
 }
 
-void OLED_write_char(uint8_t character){
+void oled_write_char(uint8_t character){
 
     for (int i = 0; i < 8; i++){
 
@@ -23,10 +27,25 @@ void OLED_write_char(uint8_t character){
 
 }
 
-void OLED_write_string(char* s){
+void oled_print(char* s){
     int i= 0;
     while(s[i] != 0){
-        OLED_write_char(s[i]);
+
+        if(s[i] == '\n'){
+
+            if(line == 6)
+                line = 0;
+            else
+                line += 1;
+            write_command(0b10110000 + line); 
+	write_command(0x21); // set column address
+	write_command(0x00);		// start address
+	write_command(0x7f);		// end address
+        }
+        else{
+
+        oled_write_char(s[i]);
+        }
         i++;
     }
 
@@ -35,15 +54,16 @@ void OLED_write_string(char* s){
 void oled_clear(){
     for (int i = 0; i < 8; i++){
 
-        write_command(0b10110000 + i);
-        for (int i = 0;i<128;i++){
-            oled_data_channel[i] = 0x0;
+        //write_command(0b10110000 + i);
+        for (int j = 0;j<128;j++){
+            *oled_data_channel = 0x00;
         }
     }
+
 }
 
 void oled_fill(){
-    for (int i = 0; i < 8; i+=2){
+    for (int i = 0; i < 8; i++){
         
 
         write_command(0b10110000 + i);
@@ -72,7 +92,7 @@ void oled_init()
 	write_command(0xd9); // set pre-charge period
 	write_command(0x21);
 	write_command(0x20); // set memory addressing mode
-	write_command(0x00); 		// set memory adressing mode to horizontal
+	write_command(0x00); 		
 	write_command(0x21); // set column address
 	write_command(0x00);		// start address
 	write_command(0x7f);		// end address
