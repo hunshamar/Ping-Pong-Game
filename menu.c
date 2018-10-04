@@ -18,7 +18,7 @@ void menu(){
     oled_print(menu[pos]);
     coord_sample cs = joy_init();
     
-    while(1){
+    while(!get_right_button_status()){
         //oled_init();
         if(get_direction(get_joy_coords_x(cs),get_joy_coords_y(cs)) == 4){
             printf("%d\n\r", pos%3);
@@ -53,7 +53,10 @@ void menu(){
         }
         
 
-
         
     }
+
+    oled_clear();
+
+    oled_print("menu exit\n\n\n\n\n\n\n");
 }

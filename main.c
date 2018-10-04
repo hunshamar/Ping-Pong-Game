@@ -12,7 +12,8 @@
 #include "joystick.h"
 #include "oled.h"
 #include "menu.h"
-
+#include "spi_driver.h"
+#include "mcp2515.h"
 
 
 int main(){
@@ -30,7 +31,19 @@ int main(){
     coord_sample cs = joy_init();
     //direction where = get_direction(get_joy_coords_x,get_joy_coords_y);
     
+
+
+
     oled_init();
+    spi_init();
+    
+    while(1){
+        //mcp2515_write(0x0F,'i');
+        //printf("HER ERN: %c \n\r", mcp2515_read(0x0F));
+        
+        mcp2515_read_status();
+
+    }
 
 
     menu();
@@ -39,7 +52,6 @@ int main(){
 
 
         //oled_write_to_pixel(20,20);
-
         _delay_ms(100);
 
         printf("joystick: %d, \n\r", get_joystick_button_status());
