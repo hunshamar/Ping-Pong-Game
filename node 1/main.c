@@ -37,20 +37,26 @@ int main(){
 
     can_init();
 
+
     msg.ID = 1;
-    msg.length = 2;
-    msg.data[0] = 'A';
-    msg.data[1] = 'B';
+    msg.length = 7;
+
+
+    uint8_t mess[7] = "Hallo!!"; 
+    for (int i = 0; i < msg.length; i++){
+        msg.data[i] = mess[i];
+    }
+
     can_write(msg);
 
-    _delay_ms(20);
-    
-    message rmsg = can_read();
+    message recieved = can_read();
 
+    printf("\n\r\n\rData: ");
+    for (int i = 0; i < recieved.length; i++){
+        printf("%c", recieved.data[i]);
+    }
     printf("\n\r");
-    
 
-    printf("message data: %c", rmsg.data[0]);
 
 
 

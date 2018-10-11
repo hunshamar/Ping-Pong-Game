@@ -19,9 +19,9 @@
 
 
 int main(){
-    
-    
-    
+
+
+    /*
     uart_init(9600);
     MCUCR = (1<<SRE);
     SFIOR = (1<<XMM2);
@@ -57,12 +57,12 @@ int main(){
     coord_sample cs = joy_init();
     //direction where = get_direction(get_joy_coords_x,get_joy_coords_y);
     
-
+    
 
 
     oled_init();
     spi_init();
-    /*
+    
     while(1){
         //mcp2515_write(0x0F,'i');
         //printf("HER ERN: %c \n\r", mcp2515_read(0x0F));
@@ -71,7 +71,7 @@ int main(){
 
     }*/
 
-
+    /*
     menu();
 
     while(1){
@@ -81,7 +81,7 @@ int main(){
         _delay_ms(100);
 
         printf("joystick: %d, \n\r", get_joystick_button_status());
-
+    */
         /*
         for (int i = 0; i<64;i++){
             _delay_ms(20);
@@ -111,13 +111,10 @@ int main(){
         */
          // {0b01111100,0b01111110,0b00010011,0b00010011,0b01111110,0b01111100,0b00000000,0b00000000}
 
-     
-    }
-
     //adc_test();
     //printf(" SVEIS ");
     //_delay_ms(2000);
-    SRAM_test();
+    //SRAM_test();
     //_delay_ms(3000);
     /*
     while(1){a
@@ -158,5 +155,6 @@ int main(){
         PORTB = (0 << PB1);
         _delay_ms(1000);
     }*/
+    
     return 0;
 }
