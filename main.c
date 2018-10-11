@@ -43,10 +43,12 @@ int main(){
     msg.data[1] = 'B';
     can_write(msg);
 
+    _delay_ms(20);
+    
     message rmsg = can_read();
 
     printf("\n\r");
-
+    
 
     printf("message data: %c", rmsg.data[0]);
 
