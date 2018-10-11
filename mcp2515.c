@@ -36,35 +36,17 @@ int mcp2515_check_bit(uint8_t address, uint8_t bit){
 
 void mcp2515_rts(uint8_t rts){
     slave_select();
-    spi_master_write(rts);
+    spi_master_write(rts); //Velger mellom TXB(0-2)CTRL ved å sette TXREQ bittet høyt
     slave_deselect();
 }
 
 uint8_t mcp2515_read_status(){
-
     slave_select();
-
     spi_master_write(MCP_READ_STATUS);
-
     uint8_t result = spi_master_read();
-
-
     spi_master_write(0x00);
-
     slave_deselect();
-
-
-    printf("her: %d\n\r",result);
-
-
     return result;
-
-
-    
-    slave_deselect();
-
-    return 1;
-
 }
 
 

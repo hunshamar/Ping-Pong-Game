@@ -15,6 +15,8 @@
 #include "spi_driver.h"
 #include "mcp2515.h"
 
+#include "can_driver.h"
+
 
 int main(){
     
@@ -28,6 +30,28 @@ int main(){
     //uart_recieve();
     
     printf("HEI \n\r");
+
+
+    message msg;
+
+
+    can_init();
+
+    msg.ID = 1;
+    msg.length = 2;
+    msg.data[0] = 'A';
+    msg.data[1] = 'B';
+    can_write(msg);
+
+    message rmsg = can_read();
+
+    printf("\n\r");
+
+
+    printf("message data: %c", rmsg.data[0]);
+
+
+
     coord_sample cs = joy_init();
     //direction where = get_direction(get_joy_coords_x,get_joy_coords_y);
     
@@ -36,14 +60,14 @@ int main(){
 
     oled_init();
     spi_init();
-    
+    /*
     while(1){
         //mcp2515_write(0x0F,'i');
         //printf("HER ERN: %c \n\r", mcp2515_read(0x0F));
         
         mcp2515_read_status();
 
-    }
+    }*/
 
 
     menu();
