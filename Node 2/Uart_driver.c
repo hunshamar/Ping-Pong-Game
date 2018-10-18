@@ -5,11 +5,11 @@
 
 
 #ifndef F_CPU
-#define F_CPU 4915200UL
+#define F_CPU 16000000UL
 #endif
 
 
-int uart_transmit(char data){ //,FILE* fil){
+int uart_transmit(char data,FILE* fil){
     while(!(UCSR0A & (1<<UDRE0))){
         //Mens flagget er av 
     }
@@ -19,7 +19,7 @@ int uart_transmit(char data){ //,FILE* fil){
 }
 
 
-int uart_recieve(){ //FILE* fil){
+int uart_recieve(FILE* fil){
     //UCSR0B = (1<<RXEN0); //tror det er å sette recieverflagg
     if(!(UCSR0A & (1<<RXC0))){
         return 0;
@@ -42,7 +42,7 @@ void uart_init(unsigned int baud){
     //Enable r/t
     UCSR0B = (1<<RXEN0) | (1<<TXEN0);
     //set frame format
-    UCSR0C = (1<<USBS0) | (1<<URSEL0) | (0<<UCSZ10) | (3<<UCSZ00);
+    UCSR0C = (1<<USBS0) | (3<<UCSZ00);
 
     fdevopen(uart_transmit,uart_recieve);
 

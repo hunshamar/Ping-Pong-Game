@@ -1,11 +1,11 @@
 #include "mcp2515.h"
 
 void slave_select(){
-    PORTB &= ~(1<< PB4);
+    PORTB &= ~(1<< PB7);
 }
 
 void slave_deselect(){
-    PORTB |= (1<< PB4);
+    PORTB |= (1<< PB7);
 }
 
 uint8_t mcp2515_read(uint8_t address){

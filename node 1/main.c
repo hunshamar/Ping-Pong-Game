@@ -46,19 +46,21 @@ int main(){
     for (int i = 0; i < msg.length; i++){
         msg.data[i] = mess[i];
     }
-
+    while(1){
     can_write(msg);
 
     message recieved = can_read();
-
-    printf("\n\r\n\rData: ");
-    for (int i = 0; i < recieved.length; i++){
-        printf("%c", recieved.data[i]);
     }
-    printf("\n\r");
-
-
-
+/*
+int asd = 0;
+while(1){
+    can_write(msg); 
+    asd+=1;
+    if (asd%1000 == 0){
+        printf("sender\n\r");
+        asd = 0;
+    }
+}*/
 
     coord_sample cs = joy_init();
     //direction where = get_direction(get_joy_coords_x,get_joy_coords_y);
