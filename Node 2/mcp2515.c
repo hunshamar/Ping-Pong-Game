@@ -36,7 +36,7 @@ int mcp2515_check_bit(uint8_t address, uint8_t bit){
 
 void mcp2515_rts(uint8_t rts){
     slave_select();
-    spi_master_write(0x80 | rts); //Velger mellom TXB(0-2)CTRL ved å sette TXREQ bittet høyt
+    spi_master_write(0x80 | rts); //Velger mellom TXB(0-2)CTRL ved å sette TXREQ bittet høyt, 0x80 er instruksjonen
     slave_deselect();
 }
 

@@ -12,6 +12,7 @@
 
 typedef struct message{
     uint16_t ID;
+    
     uint8_t length;
     uint8_t data[8];
 }message;

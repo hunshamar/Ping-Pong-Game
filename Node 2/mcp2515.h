@@ -92,8 +92,10 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_RXB0D0      0x66
 #define MCP_RXB0CTRL    0x60
 
-
-
+#define MCP_RXB1SIDH    0x71
+#define MCP_RXB1SIDL    0x72
+#define MCP_RXB1DLC     0x75
+#define MCP_RXB1D0      0x76
 
 
 #define MCP_TX_INT		0x1C		// Enable all transmit interrupts
