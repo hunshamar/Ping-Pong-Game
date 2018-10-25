@@ -8,7 +8,7 @@ void can_init(){
 
     mcp2515_bit_modify(0x60, MCP_RXB0CTRL, 0b01100000); //recieve buffer 0 control 
     mcp2515_bit_modify(0b1, MCP_CANINTE, 0b00000001); //sier at RXoIF flagget skal bli høyt ved å sette RX0IE verdien i CANINTE registeret høyt 
-    mcp2515_bit_modify(0b11100000,MCP_CANCTRL,MODE_LOOPBACK); //sett til normalmode
+    mcp2515_bit_modify(0b11100000,MCP_CANCTRL,MODE_NORMAL); //sett til normalmode
 
 
     //printf("MCP_CANCTRL, loop back?: %d \n\r\n\r",mcp2515_read(MCP_CANCTRL));
