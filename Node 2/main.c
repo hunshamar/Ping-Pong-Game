@@ -12,6 +12,8 @@
 #include "mcp2515.h"
 #include "pwm_driver.h"
 #include "adc_driver.h"
+#include "TWI_Master.h"
+#include "dac_driver.h"
 
 int main(){
 
@@ -30,14 +32,32 @@ int main(){
 
 
     can_init();
-
+    adc_init();
+    dac_init();
+    printf("kommer vi hit?");
     _delay_ms(1000);
+    sei();
+
+    int tall = 0;
     while(1){
-    
-    if(get_joystick_button_status()){
-        printf("1 \n\r");
-    }
-    else{printf("0 \n\r");}
+        printf("før \n\r");
+        send_voltage(255);
+        printf("Etter \n\r");
+        
+        
+        
+        
+        
+        /*
+        if(adc_counter()){
+            tall++;
+            printf("tall: %d \n\r", tall);
+            while(adc_counter()){
+            }
+            _delay_ms(50);
+        }
+        else{*/
+        
     
     
     
