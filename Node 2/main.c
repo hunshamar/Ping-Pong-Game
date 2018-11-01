@@ -11,6 +11,7 @@
 #include "can_driver.h"
 #include "mcp2515.h"
 #include "pwm_driver.h"
+#include "adc_driver.h"
 
 int main(){
 
@@ -32,6 +33,19 @@ int main(){
 
     _delay_ms(1000);
     while(1){
+    
+    if(get_joystick_button_status()){
+        printf("1 \n\r");
+    }
+    else{printf("0 \n\r");}
+    
+    
+    
+    
+    
+    
+    
+    /*
     pwm_signal(100);  
     
     _delay_ms(40);
@@ -44,7 +58,7 @@ int main(){
     _delay_ms(40);
 
 
-
+    */
 
     }
     
