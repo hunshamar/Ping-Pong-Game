@@ -16,20 +16,24 @@ void menu(){
     int pos = 0;
     oled_clear();
     oled_print(menu[pos]);
-    coord_sample cs = joy_init();
+
+    joystick_init();
     
-    while(!get_right_button_status()){
+    while(!slider_get_right_button_status()){
+        int x = joystick_get_x();
+        int y = joystick_get_y();
+
         //oled_init();
-        if(get_direction(get_joy_coords_x(cs),get_joy_coords_y(cs)) == 4){
+        if(joystick_get_direction() == 4){
             printf("%d\n\r", pos%3);
             pos += 1;
             oled_clear();
             oled_print(menu[pos%3]);
-            while(get_direction(get_joy_coords_x(cs),get_joy_coords_y(cs))!= 0){
+            while(joystick_get_direction()!= 0){
                 _delay_ms(50);
             }
         }
-        else if (get_direction(get_joy_coords_x(cs),get_joy_coords_y(cs)) == 3){
+        else if (joystick_get_direction() == 3){
             printf("%d\n\r", pos%3);
             pos -= 1;
             if(pos == -1){
@@ -37,15 +41,15 @@ void menu(){
             }
             oled_clear();
             oled_print(menu[pos%3]);
-            while(get_direction(get_joy_coords_x(cs),get_joy_coords_y(cs))!= 0){
+            while(joystick_get_direction()!= 0){
                 _delay_ms(50);
             }
         }
 
-        if(get_direction(get_joy_coords_x(cs),get_joy_coords_y(cs)) == 1){
+        if(joystick_get_direction() == 1){
             oled_clear();
             oled_print(sub_menu[pos%3]);
-            while(!get_joystick_button_status()){
+            while(!joystick_get_button_status()){
 
             }
             oled_clear();

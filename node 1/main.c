@@ -31,6 +31,11 @@ int main(){
     
     printf("HEI \n\r");
 
+    joystick_init();
+
+    menu();
+    
+    /*
 
     message msg;
 
@@ -51,6 +56,8 @@ int main(){
 
     message recieved = can_read();
     }
+
+    */
 /*
 int asd = 0;
 while(1){
@@ -62,7 +69,6 @@ while(1){
     }
 }*/
 
-    coord_sample cs = joy_init();
     //direction where = get_direction(get_joy_coords_x,get_joy_coords_y);
     
 
@@ -87,8 +93,6 @@ while(1){
 
         //oled_write_to_pixel(20,20);
         _delay_ms(100);
-
-        printf("joystick: %d, \n\r", get_joystick_button_status());
 
         /*
         for (int i = 0; i<64;i++){

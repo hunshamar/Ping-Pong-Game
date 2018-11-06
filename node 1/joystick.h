@@ -11,38 +11,38 @@ typedef enum dir{
     NEUTRAL,
     RIGHT,
     LEFT,
-    UP, //2
-    DOWN, //3
+    UP, 
+    DOWN, 
     
 } dir;
-
-char* dir_to_string(dir d);
 
 typedef struct direction{
     dir x;
     dir y;
 } direction;
 
-typedef struct coord_sample {
-    int x;
-    int y;
-}coord_sample;
+
+//Global variables that gets set by the init function
+volatile int x_offset;
+volatile int y_offset;
 
 
-coord_sample joy_init();
+void joystick_init();
 
-int get_angle(int x, int y);
+int joystick_get_x();
+int joystick_get_y();
 
-dir get_direction(int x, int y);
+int joystick_get_angle();
 
-int get_joy_coords_x(coord_sample offset);
-int get_joy_coords_y(coord_sample offset);
+char* dir_to_string(dir d);
+dir joystick_get_direction();
 
-int get_left_slider_pos();
-int get_right_slider_pos();
+int joystick_get_button_status();
 
+int slider_get_left_pos();
+int slider_get_right_pos();
 
-int get_left_button_status();
-int get_right_button_status();
+int slider_get_left_button_status();
+int slider_get_right_button_status();
 
 #endif
