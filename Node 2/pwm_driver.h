@@ -4,7 +4,10 @@
 #include "mcp2515.h"
 #include <avr/io.h>
 
+#define PWMMAX 1185
+#define PWMMIN 1126
+
 void pwm_init();
-void pwm_signal(uint16_t gass);
+int pwm_signal(uint16_t gass);
 
 #endif

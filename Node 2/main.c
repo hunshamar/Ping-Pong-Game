@@ -14,10 +14,13 @@
 #include "adc_driver.h"
 #include "TWI_Master.h"
 #include "dac_driver.h"
+#include "joystick.h"
+#include "motor_controller.h"
+#include "pi.h"
 
 int main(){
-
-
+    PIData_t pi;
+    PI_Init(1,0,&pi);
     uart_init(9600);
     pwm_init();
     
@@ -30,19 +33,20 @@ int main(){
 
     message msg;
 
-
-    can_init();
+    sei();
     adc_init();
     dac_init();
-    printf("kommer vi hit?");
-    _delay_ms(1000);
-    sei();
+    can_init();
 
+    _delay_ms(100);
+   joystick_init();
+    
+    /*
     int tall = 0;
     while(1){
         printf("før \n\r");
-        send_voltage(255);
-        printf("Etter \n\r");
+        send_voltage(125);
+        printf("Etter? \n\r");
         
         
         
@@ -55,10 +59,9 @@ int main(){
             while(adc_counter()){
             }
             _delay_ms(50);
-        }
-        else{*/
+        }*/
+      
         
-    
     
     
     
@@ -69,16 +72,27 @@ int main(){
     pwm_signal(100);  
     
     _delay_ms(40);
-    message recieved = can_read();
-
-    printf("x: %d, y: %d \n\r", recieved.data[0], recieved.data[1]);
-    
-
-    
-    _delay_ms(40);
-
 
     */
+
+    motor_controller_init();
+
+   while(1){
+    
+    
+    can_init();
+
+    _delay_ms(60);
+
+    /*printf("x: %d  y: %d  jb: %d  ls: %d  rs: %d  lsb: %d  rsb: %d  mag: %d   \n\r",
+        joystick_get_raw_x(), joystick_get_raw_y(), joystick_get_button_status(), slider_get_left_pos(),
+        slider_get_right_pos(), slider_get_left_button_status(), slider_get_right_button_status(), joystick_get_raw_x()-x_offset
+        );*/
+
+    motor_controller_cont(PI_Controller(joystick_get_raw_x()-x_offset, get_encoder_data(), &pi)+x_offset);
+    joystick_to_pwm(joystick_get_y());
+    printf("Encoderverdiene våre er som følger: %d \n\r",get_encoder_data());
+    printf("Regulatorverdiene våre er som følger: %d \n\r", PI_Controller(0, get_encoder_data(), &pi));
 
     }
     

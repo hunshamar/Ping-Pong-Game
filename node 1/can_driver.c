@@ -5,7 +5,7 @@ void can_init(){
     spi_init();
 
     mcp2515_reset();
-    mcp2515_bit_modify(0b11100000,MCP_CANCTRL,0b01000000); //sett til normalmode
+    mcp2515_bit_modify(0b11100000,MCP_CANCTRL,MODE_NORMAL); //sett til normalmode
     mcp2515_bit_modify(0x60, MCP_RXB0CTRL, 0b01100000); //recieve buffer 0 control 
 
     mcp2515_bit_modify(0b1, MCP_CANINTE, 0b00000001); //sier at RXoIF flagget skal bli høyt ved å sette RX0IE verdien i CANINTE registeret høyt 
@@ -28,10 +28,9 @@ void can_write(message msg){
     mcp2515_bit_modify(0b00001111,MCP_TXB0DLC,msg.length);
     /** Dataoverføring, opptil 8 bytes med data, skrives til register TDXB0D0 til TDXB0D7. **/
 
-        printf("Data sendt: ");
     for (int length = 0; length < msg.length; length++){
         mcp2515_write(MCP_TXB0D0 + length, msg.data[length]);
-               printf(" %d ", msg.data[length]);
+              
     }
     mcp2515_rts(1);
 

@@ -8,8 +8,8 @@ void dac_init(){
 
 void send_voltage(uint8_t diff){
     uint8_t message[3];
-    message[0] = TWI_ADDRESS;
-    message[1] = TWI_COMMAND;
+    message[0] = TWI_ADDRESS; // fire bit for å signalisere addresse og 4 nullere som er addressen til slaven (jordet)
+    message[1] = TWI_COMMAND; 
     message[2] = diff;
     
     TWI_Start_Transceiver_With_Data(message,3);

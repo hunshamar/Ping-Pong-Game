@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "adc_driver.h": "c"
+        "adc_driver.h": "c",
+        "motor_controller.h": "c"
     }
 }

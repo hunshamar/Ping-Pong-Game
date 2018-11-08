@@ -33,9 +33,8 @@ int main(){
 
     joystick_init();
 
-    menu();
     
-    /*
+    
 
     message msg;
 
@@ -47,18 +46,27 @@ int main(){
     msg.length = 7;
 
 
-    uint8_t mess[7] = "Hallo!!"; 
-    for (int i = 0; i < msg.length; i++){
-        msg.data[i] = mess[i];
-    }
+    
     while(1){
+
+    msg.data[0] = read_channel(CHANNEL_1); //x
+    msg.data[1] = read_channel(CHANNEL_2); //y
+    msg.data[2] = joystick_get_button_status(); //joystickknapp
+    msg.data[3] = slider_get_left_pos();
+    msg.data[4] = slider_get_right_pos();
+    msg.data[5] = slider_get_left_button_status();
+    msg.data[6] = slider_get_right_button_status();
+
+
+    
+
     can_write(msg);
+    
 
-    message recieved = can_read();
     }
+    
 
-    */
-/*
+/*send_voltage
 int asd = 0;
 while(1){
     can_write(msg); 

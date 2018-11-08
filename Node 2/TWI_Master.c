@@ -189,7 +189,7 @@ ISR(TWI_vect)
       TWCR = (1<<TWEN)|                                 // TWI Interface enabled
              (0<<TWIE)|(1<<TWINT)|                      // Disable TWI Interrupt and clear the flag
              (0<<TWEA)|(0<<TWSTA)|(1<<TWSTO)|           // Initiate a STOP condition.
-             (0<<TWWC);                                 //
+             (0<<TWWC);                    //
       break;      
     case TWI_ARB_LOST:          // Arbitration lost
       TWCR = (1<<TWEN)|                                 // TWI Interface enabled

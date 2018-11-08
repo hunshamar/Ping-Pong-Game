@@ -17,7 +17,7 @@ typedef struct message{
     uint8_t data[8];
 }message;
 
-void can_init();
+void can_init(); //Kjør før hver recieve
 
 void can_write(message msg);
 
