@@ -23,6 +23,8 @@ int main(){
     
     
     uart_init(9600);
+
+    
     MCUCR = (1<<SRE);
     SFIOR = (1<<XMM2);
 
@@ -32,8 +34,6 @@ int main(){
     printf("HEI \n\r");
 
     joystick_init();
-
-    
     
 
     message msg;
@@ -41,14 +41,13 @@ int main(){
 
     can_init();
 
-
+    
     msg.ID = 1;
     msg.length = 7;
-
-
+    int i = 0;
     
     while(1){
-
+        
     msg.data[0] = read_channel(CHANNEL_1); //x
     msg.data[1] = read_channel(CHANNEL_2); //y
     msg.data[2] = joystick_get_button_status(); //joystickknapp
@@ -57,13 +56,16 @@ int main(){
     msg.data[5] = slider_get_left_button_status();
     msg.data[6] = slider_get_right_button_status();
 
+    _delay_ms(17); //sender ish 60 hz
 
-    printf("sender: x: %d y: %d \n\r", msg.data[0], msg.data[1]);
+    int i = 0;
+    int j = 0;
 
-    can_write(msg);
+
+    printf("sender X: %d Y: %d  \n\r", msg.data[0], msg.data[1], msg.data[2]);
+   }
+
     
-
-    }
     
 
 /*send_voltage
@@ -82,8 +84,8 @@ while(1){
 
 
 
-    oled_init();
-    spi_init();
+    //oled_init();
+    //spi_init();
     /*
     while(1){
         //mcp2515_write(0x0F,'i');
@@ -94,14 +96,12 @@ while(1){
     }*/
 
 
-    menu();
+    //menu();
 
-    while(1){
+    //while(1){
 
-
+        //can_init();
         //oled_write_to_pixel(20,20);
-        _delay_ms(100);
-
         /*
         for (int i = 0; i<64;i++){
             _delay_ms(20);
@@ -132,12 +132,12 @@ while(1){
          // {0b01111100,0b01111110,0b00010011,0b00010011,0b01111110,0b01111100,0b00000000,0b00000000}
 
      
-    }
+    //}
 
     //adc_test();
     //printf(" SVEIS ");
     //_delay_ms(2000);
-    SRAM_test();
+    //SRAM_test();
     //_delay_ms(3000);
     /*
     while(1){a

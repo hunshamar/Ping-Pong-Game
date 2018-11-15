@@ -87,9 +87,16 @@ int main(){
     //printf("Encoderverdien vår er: %d \n\r",get_encoder_data());
     can_init();
     
-    int position = (get_encoder_data()*-1)/87.65;
+    
 
-    _delay_ms(60);
+    //printf("MCP_CANCTRL, loop back?: %d \n\r\n\r",mcp2515_read(MCP_CANCTRL));
+    
+    //int position = (get_encoder_data()*-1)/87.65;
+
+
+
+
+    /*
     motor_controller_cont(PI_Controller((int)(slider_get_right_pos()),position,&pi));
     printf("  Slider right: %d ",slider_get_right_pos());
     printf("    Encoder: %d ",position);
@@ -97,13 +104,17 @@ int main(){
     if(joystick_get_button_status()){
         printf("Shoot! \n\r");
         solenoid_shoot();
-    }
+    }*/
     //send_voltage(100);
-    
-    /*printf("X: %d  y: %d  jb: %d  ls: %d  rs: %d  lsb: %d  rsb: %d  mag: %d   \n\r",
+
+
+    if (mcp2515_check_bit(MCP_CANINTF,1)){ //Fått ny melding
+        RECIEVED = can_read();
+    }
+    printf("X: %d  y: %d  jb: %d  ls: %d  rs: %d  lsb: %d  rsb: %d  mag: %d   \n\r",
         joystick_get_raw_x(), joystick_get_raw_y(), joystick_get_button_status(), slider_get_left_pos(),
         slider_get_right_pos(), slider_get_left_button_status(), slider_get_right_button_status(), joystick_get_raw_x()-x_offset
-        );*/
+        );
     
     //motor_controller_cont(PI_Controller(joystick_get_raw_x()-x_offset, get_encoder_data()*0.1, &pi));
     //printf("Reggis output: %d \n\r",PI_Controller(joystick_get_raw_x()-x_offset, get_encoder_data()*0.1, &pi));

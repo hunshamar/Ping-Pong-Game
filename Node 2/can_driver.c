@@ -71,13 +71,15 @@ message can_read(){
             msg.data[l] = mcp2515_read(MCP_RXB1D0 + l);
             //printf(" %d ", msg.data[l]);
         }
+        mcp2515_bit_modify(00000001,MCP_CANINTF,0b0); //Skrur av recieved-flagget
 
 
     }
-    else printf("RXB... dårlig \n\r");
+    else{ 
+        printf("can error \n\r");
 
+    }
     //printf("\n\r----------\n\r\n\r ");
-    mcp2515_bit_modify(00000001,MCP_CANINTF,0b0);
     //    printf("FERDIG");
 
     return msg;

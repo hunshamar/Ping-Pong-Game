@@ -10,23 +10,23 @@
 
 void joystick_init(){
 
-    x_offset = can_read().data[0];
-    y_offset = can_read().data[1];
+    x_offset = RECIEVED.data[0];
+    y_offset = RECIEVED.data[1];
 }
 
 
 int joystick_get_raw_x(){
-    return can_read().data[0];
+    return RECIEVED.data[0];
 }
 
 int joystick_get_raw_y(){
-    return can_read().data[1];
+    return RECIEVED.data[1];
 }
 
 
 int joystick_get_x(){
 
-    int x = ((double)(can_read().data[0]) - x_offset);
+    int x = ((double)(RECIEVED.data[0]) - x_offset);
 
     if (x >= 0){
         x /= 0.74;
@@ -46,8 +46,8 @@ int joystick_get_x(){
 }
 
 
-int joystick_get_y(){
-    int y = ((double)(can_read().data[1]) - y_offset);
+int joystick_get_y(){ 
+    int y = ((double)(RECIEVED.data[1]) - y_offset);
 
     if (y >= 0){
         y /= 0.77;
@@ -126,26 +126,26 @@ dir joystick_get_direction(){
 
 
 int joystick_get_button_status(){
-    return can_read().data[2];
+    return RECIEVED.data[2];
 }
 
 
 int slider_get_left_pos(){
-    return can_read().data[3];
+    return RECIEVED.data[3];
 }
 
 int slider_get_right_pos(){    
-    return can_read().data[4];
+    return RECIEVED.data[4];
 }
 
 int slider_get_left_button_status(){
 
-    return can_read().data[6];
+    return RECIEVED.data[6];
 }
 
 int slider_get_right_button_status(){
 
-    return can_read().data[5];
+    return RECIEVED.data[5];
 }
 
 void joystick_to_pwm(int x){

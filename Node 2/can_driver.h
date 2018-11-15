@@ -26,5 +26,10 @@ int can_transmit_complete();
 
 message can_read();
 
+message RECIEVED; //global variabel
+
+
+
+
 
 #endif
