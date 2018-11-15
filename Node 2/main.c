@@ -17,6 +17,7 @@
 #include "joystick.h"
 #include "motor_controller.h"
 #include "pi.h"
+#include "solenoid.h"
 
 int main(){
     PIData_t pi;
@@ -24,7 +25,8 @@ int main(){
     uart_init(9600);
     pwm_init();
     
-
+    /*
+    pwm_s
     //uart_transmit(8);
     //uart_recieve();
 
@@ -47,8 +49,8 @@ int main(){
         printf("før \n\r");
         send_voltage(125);
         printf("Etter? \n\r");
-        
-        
+            /*
+    pwm_s
         
         
         
@@ -62,11 +64,7 @@ int main(){
         }*/
       
         
-    
-    
-    
-    
-    
+
     
     /*
     pwm_signal(100);  
@@ -77,19 +75,21 @@ int main(){
 
     motor_controller_init();
 
-   while(1){
+    while(1){
     
     
     can_init();
-
-    _delay_ms(60);
-
+    solenoid_init();
+    solenoid_shoot();
+    _delay_ms(1400);
+    
     /*printf("x: %d  y: %d  jb: %d  ls: %d  rs: %d  lsb: %d  rsb: %d  mag: %d   \n\r",
         joystick_get_raw_x(), joystick_get_raw_y(), joystick_get_button_status(), slider_get_left_pos(),
         slider_get_right_pos(), slider_get_left_button_status(), slider_get_right_button_status(), joystick_get_raw_x()-x_offset
         );*/
-    
+
     //motor_controller_cont(PI_Controller(joystick_get_raw_x()-x_offset, get_encoder_data(), &pi)+x_offset);
+    /*
     joystick_to_pwm(joystick_get_y());
     motor_controller_cont(joystick_get_x());
     printf("\n\r");
@@ -97,6 +97,7 @@ int main(){
     printf("Encoderverdiene våre er som følger: %d \n\r",get_encoder_data());
     printf("Regulatorverdiene våre er som følger: %d \n\r", PI_Controller(0, get_encoder_data(), &pi));
 
+    */
     }
     
     return 0;
