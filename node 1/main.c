@@ -58,7 +58,7 @@ int main(){
     msg.data[6] = slider_get_right_button_status();
 
 
-    
+    printf("sender: x: %d y: %d \n\r", msg.data[0], msg.data[1]);
 
     can_write(msg);
     
