@@ -9,9 +9,10 @@ void motor_controller_init(){
 }
 
 
-void motor_controller_cont(uint8_t magnitude){
+void motor_controller_cont(int speed){ //speed er 0 i 0, høyre er positiv, og venste er negativ. -100 til 100.
+    printf("Speed: %d",speed);
 
-    printf("rx: %d", joystick_get_raw_x());
+    /*printf("rx: %d", joystick_get_raw_x());
     if(joystick_get_raw_x() < 50){
         printf("if");
         PORTH |= (1 << PINH1);
@@ -21,6 +22,17 @@ void motor_controller_cont(uint8_t magnitude){
         printf("else if");
         PORTH &= ~(1 << PINH1);
         send_voltage(magnitude - x_offset);
+    }*/
+    if(speed > 10){
+        PORTH |= (1<<PINH1); //right direction
+        send_voltage(speed);
+    }else if(speed < -10){
+        send_voltage(speed*(-1));
+        PORTH &= ~(1 << PINH1);
+        printf("Jeg er inni den derre");
+    }else{
+        send_voltage(0);
+        printf("Jeg står stille \n\r");
     }
 }
 

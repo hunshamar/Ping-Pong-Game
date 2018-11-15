@@ -88,9 +88,12 @@ int main(){
         joystick_get_raw_x(), joystick_get_raw_y(), joystick_get_button_status(), slider_get_left_pos(),
         slider_get_right_pos(), slider_get_left_button_status(), slider_get_right_button_status(), joystick_get_raw_x()-x_offset
         );*/
-
-    motor_controller_cont(PI_Controller(joystick_get_raw_x()-x_offset, get_encoder_data(), &pi)+x_offset);
+    
+    //motor_controller_cont(PI_Controller(joystick_get_raw_x()-x_offset, get_encoder_data(), &pi)+x_offset);
     joystick_to_pwm(joystick_get_y());
+    motor_controller_cont(joystick_get_x());
+    printf("\n\r");
+    printf("Joystick x: %d",joystick_get_raw_x());
     printf("Encoderverdiene våre er som følger: %d \n\r",get_encoder_data());
     printf("Regulatorverdiene våre er som følger: %d \n\r", PI_Controller(0, get_encoder_data(), &pi));
 

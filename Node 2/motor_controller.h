@@ -4,5 +4,5 @@
 #include <util/delay.h>
 
 void motor_controller_init();
-void motor_controller_cont(uint8_t magnitude);
+void motor_controller_cont(int speed);
 uint16_t get_encoder_data();
