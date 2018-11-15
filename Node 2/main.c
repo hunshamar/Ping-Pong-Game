@@ -21,16 +21,17 @@
 
 int main(){
     PIData_t pi;
-    PI_Init(1,0,&pi);
+    PI_Init(250,10,&pi);
     uart_init(9600);
     pwm_init();
+    solenoid_init();
     
-    /*
-    pwm_s
+    
     //uart_transmit(8);
     //uart_recieve();
 
     printf("HEI \n\r");
+
 
 
     message msg;
@@ -41,7 +42,7 @@ int main(){
     can_init();
 
     _delay_ms(100);
-   joystick_init();
+    joystick_init();
     
     /*
     int tall = 0;
@@ -50,7 +51,7 @@ int main(){
         send_voltage(125);
         printf("Etter? \n\r");
             /*
-    pwm_s
+    
         
         
         
@@ -73,31 +74,49 @@ int main(){
 
     */
 
+
+
     motor_controller_init();
 
+    PORTH &= ~(1 << PINH1); //left direction
+    send_voltage(100);
+    _delay_ms(1000);
+
+    int i = 0;
     while(1){
-    
-    
+    //printf("Encoderverdien vår er: %d \n\r",get_encoder_data());
     can_init();
-    solenoid_init();
-    solenoid_shoot();
-    _delay_ms(1400);
     
-    /*printf("x: %d  y: %d  jb: %d  ls: %d  rs: %d  lsb: %d  rsb: %d  mag: %d   \n\r",
+    int position = (get_encoder_data()*-1)/87.65;
+
+    _delay_ms(60);
+    motor_controller_cont(PI_Controller((int)(slider_get_right_pos()),position,&pi));
+    printf("  Slider right: %d ",slider_get_right_pos());
+    printf("    Encoder: %d ",position);
+    printf("    Error er: %d \n\r",slider_get_right_pos()-position);
+    if(joystick_get_button_status()){
+        printf("Shoot! \n\r");
+        solenoid_shoot();
+    }
+    //send_voltage(100);
+    
+    /*printf("X: %d  y: %d  jb: %d  ls: %d  rs: %d  lsb: %d  rsb: %d  mag: %d   \n\r",
         joystick_get_raw_x(), joystick_get_raw_y(), joystick_get_button_status(), slider_get_left_pos(),
         slider_get_right_pos(), slider_get_left_button_status(), slider_get_right_button_status(), joystick_get_raw_x()-x_offset
         );*/
-
-    //motor_controller_cont(PI_Controller(joystick_get_raw_x()-x_offset, get_encoder_data(), &pi)+x_offset);
+    
+    //motor_controller_cont(PI_Controller(joystick_get_raw_x()-x_offset, get_encoder_data()*0.1, &pi));
+    //printf("Reggis output: %d \n\r",PI_Controller(joystick_get_raw_x()-x_offset, get_encoder_data()*0.1, &pi));
+    //joystick_to_pwm(joystick_get_y());
+    //motor_controller_cont(50);
+    //motor_controller_cont(joystick_get_x());
     /*
-    joystick_to_pwm(joystick_get_y());
-    motor_controller_cont(joystick_get_x());
     printf("\n\r");
     printf("Joystick x: %d",joystick_get_raw_x());
     printf("Encoderverdiene våre er som følger: %d \n\r",get_encoder_data());
     printf("Regulatorverdiene våre er som følger: %d \n\r", PI_Controller(0, get_encoder_data(), &pi));
-
     */
+    
     }
     
     return 0;

@@ -10,7 +10,7 @@ void motor_controller_init(){
 
 
 void motor_controller_cont(int speed){ //speed er 0 i 0, høyre er positiv, og venste er negativ. -100 til 100.
-    printf("Speed: %d",speed);
+    printf(" Speed: %d ",speed);
 
     /*printf("rx: %d", joystick_get_raw_x());
     if(joystick_get_raw_x() < 50){
@@ -26,13 +26,13 @@ void motor_controller_cont(int speed){ //speed er 0 i 0, høyre er positiv, og v
     if(speed > 10){
         PORTH |= (1<<PINH1); //right direction
         send_voltage(speed);
+
     }else if(speed < -10){
         send_voltage(speed*(-1));
-        PORTH &= ~(1 << PINH1);
-        printf("Jeg er inni den derre");
+        PORTH &= ~(1 << PINH1); //left direction
+
     }else{
         send_voltage(0);
-        printf("Jeg står stille \n\r");
     }
 }
 
@@ -47,7 +47,7 @@ uint16_t get_encoder_data(){
     PORTH |= (1<<PH3); //set SEL HIGH to read low byte
     _delay_ms(20);
     data |= PINK;
-    PORTH &= ~(1<<PH6); //toggle reset
+    //PORTH &= ~(1<<PH6); //toggle reset
     _delay_ms(20);
     PORTH |= (1<<PH6);
     PORTH |= (1 << PH5); //output disable
@@ -55,3 +55,10 @@ uint16_t get_encoder_data(){
     return data;
 }
 
+uint16_t get_position(){
+    int pos = get_encoder_data() / 87.65;
+    if (pos > 110){
+        pos = 0;
+    }
+    return pos;
+}

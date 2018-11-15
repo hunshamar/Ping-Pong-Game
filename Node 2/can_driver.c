@@ -49,9 +49,9 @@ int can_transmit_complete(){
 
 
 message can_read(){
-    
+
     message msg;
-    if(mcp2515_check_bit(MCP_CANINTF,1)){ /////ERRE NOE GALT MED CANINTF??
+    if(mcp2515_check_bit(MCP_CANINTF,1)){
         uint8_t ID_high = mcp2515_read(MCP_RXB1SIDH);
         uint8_t ID_low = mcp2515_read(MCP_RXB1SIDL);
         msg.ID = (ID_high << 3) | (ID_low >> 5); //11 bit adresse
@@ -74,7 +74,7 @@ message can_read(){
 
 
     }
-    else printf("RXB... dårlig");
+    else printf("RXB... dårlig \n\r");
 
     //printf("\n\r----------\n\r\n\r ");
     mcp2515_bit_modify(00000001,MCP_CANINTF,0b0);

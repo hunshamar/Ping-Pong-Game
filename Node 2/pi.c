@@ -23,6 +23,12 @@
 #include "pi.h"
 #include "stdint.h"
 
+
+
+
+
+
+
 /*! \brief Initialisation of pi controller parameters.
  *
  *  Initialise the variables used by the pi algorithm.
@@ -61,12 +67,13 @@ int16_t PI_Controller(int16_t setPoint, int16_t processValue, struct pi_DATA *pi
 
   error = setPoint - processValue;
 
+
   // Calculate Pterm and limit error overflow
-  if (error > pi_st->maxError){
-    p_term = MAX_INT;
+  if (error > 100){
+    p_term = 100;
   }
-  else if (error < -pi_st->maxError){
-    p_term = -MAX_INT;
+  else if (error < -100){
+    p_term = -100;
   }
   else{
     p_term = pi_st->P_Factor * error;
@@ -95,7 +102,6 @@ int16_t PI_Controller(int16_t setPoint, int16_t processValue, struct pi_DATA *pi
   else if(ret < -MAX_INT){
     ret = -MAX_INT;
   }
-
   return((int16_t)ret);
 }
 

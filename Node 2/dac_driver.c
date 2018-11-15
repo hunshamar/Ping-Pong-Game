@@ -14,4 +14,3 @@ void send_voltage(uint8_t diff){
     
     TWI_Start_Transceiver_With_Data(message,3);
 }
-
