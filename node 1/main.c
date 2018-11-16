@@ -20,32 +20,19 @@
 
 int main(){
     
-    
-    
+    //Initializing modules
     uart_init(9600);
-
-    
-    MCUCR = (1<<SRE);
-    SFIOR = (1<<XMM2);
-
-    //uart_transmit(8);
-    //uart_recieve();
-    
-    printf("HEI \n\r");
-
+    SRAM_init();
     joystick_init();
-    
-
-    message msg;
-
-
     can_init();
 
-    
+    //Declare variables
+    message msg;
     msg.ID = 1;
     msg.length = 7;
     int i = 0;
     
+    printf("HEI \n\r");
     while(1){
         
     msg.data[0] = read_channel(CHANNEL_1); //x
@@ -63,6 +50,10 @@ int main(){
 
 
     printf("sender X: %d Y: %d  \n\r", msg.data[0], msg.data[1], msg.data[2]);
+
+    _delay_ms(20);
+
+    printf("Mottar: x:  %d", can_read().data[0]);
    }
 
     

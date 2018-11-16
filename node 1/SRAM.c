@@ -2,8 +2,12 @@
 #include<stdint.h>
 #include <stdio.h>
 #include "SRAM.h"
+#include <avr/io.h>
 
-
+void SRAM_init(){
+    MCUCR = (1<<SRE); //enables external memory interface
+    SFIOR = (1<<XMM2); //External memory high mask
+}
 void SRAM_test(void)
 {
   volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM

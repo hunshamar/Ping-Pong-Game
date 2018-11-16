@@ -86,6 +86,7 @@ int main(){
     while(1){
     //printf("Encoderverdien vår er: %d \n\r",get_encoder_data());
     can_init();
+    _delay_ms(60);
     
     
 
@@ -110,12 +111,17 @@ int main(){
 
     if (mcp2515_check_bit(MCP_CANINTF,1)){ //Fått ny melding
         RECIEVED = can_read();
+        printf("Melding kommet");
     }
+
+    printf("x: %d", can_read().data[0]);
+
+    /*
     printf("X: %d  y: %d  jb: %d  ls: %d  rs: %d  lsb: %d  rsb: %d  mag: %d   \n\r",
         joystick_get_raw_x(), joystick_get_raw_y(), joystick_get_button_status(), slider_get_left_pos(),
         slider_get_right_pos(), slider_get_left_button_status(), slider_get_right_button_status(), joystick_get_raw_x()-x_offset
         );
-    
+    */
     //motor_controller_cont(PI_Controller(joystick_get_raw_x()-x_offset, get_encoder_data()*0.1, &pi));
     //printf("Reggis output: %d \n\r",PI_Controller(joystick_get_raw_x()-x_offset, get_encoder_data()*0.1, &pi));
     //joystick_to_pwm(joystick_get_y());

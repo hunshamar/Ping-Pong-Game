@@ -9,6 +9,6 @@ typedef enum {
     CHANNEL_4 = 0b00000111,
 } adc_channel_t;
 
-uint8_t read_channel(adc_channel_t channel);
+uint8_t read_adc_channel(adc_channel_t channel);
 
 #endif /* __ADC_DRIVER_H__ */
