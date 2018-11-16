@@ -10,8 +10,11 @@
 
 void joystick_init(){
 
+    RECIEVED = can_read();
+
     x_offset = RECIEVED.data[0];
     y_offset = RECIEVED.data[1];
+
 }
 
 

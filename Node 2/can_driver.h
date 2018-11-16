@@ -28,6 +28,7 @@ message can_read();
 
 message RECIEVED; //global variabel
 
+int can_update(); //Updated recieve
 
 
 

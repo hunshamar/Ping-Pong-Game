@@ -18,10 +18,10 @@
 #include "motor_controller.h"
 #include "pi.h"
 #include "solenoid.h"
+#include "game.h"
+//#include "interrupt.h"
 
 int main(){
-    PIData_t pi;
-    PI_Init(250,10,&pi);
     uart_init(9600);
     pwm_init();
     solenoid_init();
@@ -34,7 +34,6 @@ int main(){
 
 
 
-    message msg;
 
     sei();
     adc_init();
@@ -43,7 +42,7 @@ int main(){
 
     _delay_ms(100);
     joystick_init();
-    
+    //interrupt_init();
     /*
     int tall = 0;
     while(1){
@@ -81,40 +80,60 @@ int main(){
     PORTH &= ~(1 << PINH1); //left direction
     send_voltage(100);
     _delay_ms(1000);
+    
+
+
+    message nah;
+    nah.ID = 2;
+    nah.length = 1;
+    nah.data[0] = 1;
+    
+    PIData_t pi;
+    PI_Init(250,10,&pi);
+
 
     int i = 0;
     while(1){
+    
+    
     //printf("Encoderverdien vår er: %d \n\r",get_encoder_data());
-    can_init();
-    _delay_ms(60);
-    
-    
 
     //printf("MCP_CANCTRL, loop back?: %d \n\r\n\r",mcp2515_read(MCP_CANCTRL));
     
-    //int position = (get_encoder_data()*-1)/87.65;
+    int position = (get_encoder_data()*-1)/87.65;
 
 
+    uint16_t adc_input = adc_read();
+    message msg;
+    msg.ID = 1;
+    msg.length = 2;
+    msg.data[0] = (adc_input>>8);
+    msg.data[1] = (adc_input);
 
-
-    /*
-    motor_controller_cont(PI_Controller((int)(slider_get_right_pos()),position,&pi));
+    
+    motor_controller_cont(PI_Controller((int)(slider_get_right_pos()), position, &pi));
     printf("  Slider right: %d ",slider_get_right_pos());
     printf("    Encoder: %d ",position);
     printf("    Error er: %d \n\r",slider_get_right_pos()-position);
+    printf("adc input %d %d", msg.data[0], msg.data[1]);
     if(joystick_get_button_status()){
         printf("Shoot! \n\r");
         solenoid_shoot();
-    }*/
+    }
     //send_voltage(100);
-
-
-    if (mcp2515_check_bit(MCP_CANINTF,1)){ //Fått ny melding
+    
+    if (mcp2515_check_bit(MCP_CANINTF,1)){ //Fått ny melding?
         RECIEVED = can_read();
-        printf("Melding kommet");
     }
 
-    printf("x: %d", can_read().data[0]);
+    can_write(msg);
+    /*while(!adc_counter()){
+
+    printf(adc_counter());
+    
+    game_play(MODE_SPEED);
+    }
+    
 
     /*
     printf("X: %d  y: %d  jb: %d  ls: %d  rs: %d  lsb: %d  rsb: %d  mag: %d   \n\r",

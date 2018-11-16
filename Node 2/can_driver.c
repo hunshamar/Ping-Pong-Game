@@ -6,8 +6,8 @@ void can_init(){
 
     mcp2515_reset();
 
-    mcp2515_bit_modify(0x60, MCP_RXB0CTRL, 0b01100000); //recieve buffer 0 control 
-    mcp2515_bit_modify(0b1, MCP_CANINTE, 0b00000001); //sier at RXoIF flagget skal bli høyt ved å sette RX0IE verdien i CANINTE registeret høyt 
+    mcp2515_bit_modify(0x60, MCP_RXB1CTRL, 0b01100000); //recieve buffer 0 control 
+    mcp2515_bit_modify(0b10, MCP_CANINTE, 0b00000010); //sier at RXoIF flagget skal bli høyt ved å sette RX0IE verdien i CANINTE registeret høyt 
     mcp2515_bit_modify(0b11100000,MCP_CANCTRL,MODE_NORMAL); //sett til normalmode
 
 
@@ -38,7 +38,6 @@ void can_write(message msg){
     
     
     mcp2515_rts(1);
-    printf("RtS i funk: %d \n\r", mcp2515_check_bit(MCP_TXB0CTRL,3));
 
 
 }
@@ -71,7 +70,7 @@ message can_read(){
             msg.data[l] = mcp2515_read(MCP_RXB1D0 + l);
             //printf(" %d ", msg.data[l]);
         }
-        mcp2515_bit_modify(00000001,MCP_CANINTF,0b0); //Skrur av recieved-flagget
+        mcp2515_bit_modify(0b00000011,MCP_CANINTF,0b0); //Skrur av recieved-flagget
 
 
     }
@@ -83,4 +82,13 @@ message can_read(){
     //    printf("FERDIG");
 
     return msg;
+}
+
+
+int can_update(){
+    if (mcp2515_check_bit(MCP_CANINTF,1)){ //Fått ny melding
+            RECIEVED = can_read();
+            return 1;
+        }
+    return 0;
 }
