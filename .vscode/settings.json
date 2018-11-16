@@ -4,6 +4,7 @@
         "adc_driver.h": "c",
         "motor_controller.h": "c",
         "dac_driver.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "menu.h": "c"
     }
 }

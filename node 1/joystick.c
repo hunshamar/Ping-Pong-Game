@@ -66,7 +66,7 @@ char* dir_to_string(dir d){
 }
 
 
-/*int joystick_get_angle(){
+int joystick_get_angle(){
     
     int x = joystick_get_x();
     int y = joystick_get_y();
@@ -84,7 +84,7 @@ char* dir_to_string(dir d){
         angle += 360;
     }
     return angle;
-}*/ //kan fjernes??
+}
 
 
 dir joystick_get_direction(){ //reads the joystick position and returns the direction

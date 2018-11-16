@@ -14,6 +14,7 @@
 #include "menu.h"
 #include "spi_driver.h"
 #include "mcp2515.h"
+#include "interrupt.h"
 
 #include "can_driver.h"
 
@@ -25,35 +26,45 @@ int main(){
     SRAM_init();
     joystick_init();
     can_init();
-
+    interrupt_init();
+    sei();
+    
     //Declare variables
+    /*
     message msg;
     msg.ID = 1;
     msg.length = 7;
     int i = 0;
-    
+    */
+
     printf("HEI \n\r");
     while(1){
-        
-    msg.data[0] = read_channel(CHANNEL_1); //x
-    msg.data[1] = read_channel(CHANNEL_2); //y
+
+    
+    if(mcp2515_check_bit(MCP_CANINTF,0)){
+        message recieved = can_read();
+        printf("Mottatt can: %d %d \n\r", recieved.data[0],recieved.data[1]);
+    }
+    /*
+    msg.data[0] = read_adc_channel(CHANNEL_1); //x
+    msg.data[1] = read_adc_channel(CHANNEL_2); //y
     msg.data[2] = joystick_get_button_status(); //joystickknapp
     msg.data[3] = slider_get_left_pos();
     msg.data[4] = slider_get_right_pos();
     msg.data[5] = slider_get_left_button_status();
-    msg.data[6] = slider_get_right_button_status();
+    msg.data[6]MCP_CANINTE = slider_get_right_button_status();
+    
 
     _delay_ms(17); //sender ish 60 hz
 
-    int i = 0;
-    int j = 0;
+    can_write(msg);
+    
+    printf("sender X: %d Y: %d \n\r", msg.data[0], msg.data[1], msg.data[2]);
+    */
 
 
-    printf("sender X: %d Y: %d  \n\r", msg.data[0], msg.data[1], msg.data[2]);
 
-    _delay_ms(20);
-
-    printf("Mottar: x:  %d", can_read().data[0]);
+    //printf("  mottatt x: %d \n\r", can_read().data[0]);
    }
 
     
