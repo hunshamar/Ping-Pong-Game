@@ -148,7 +148,23 @@ void oled_write_to_pixel(int x, int y){
     }
 
     oled_write_data(x-1,word);
+}
 
-
-
+void oled_print_node_and_children(menu_element element, int elem_nr){
+    oled_print(element.print);
+    int i = 0;
+    oled_print("\n");
+    while(children[i]!=NULL){
+        if(i == elem_nr){
+            oled_print("->");
+        }
+        oled_print(element->children[i].print);
+        oled_print("\n");
+        i++;
+    }
+    i = 6-i;
+    while(i != 0){
+        oled_print("\n");
+        i--;
+    }
 }

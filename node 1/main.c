@@ -11,7 +11,7 @@
 #include "adc_driver.h"
 #include "joystick.h"
 #include "oled.h"
-#include "menu.h"
+//#include "menu.h"
 #include "spi_driver.h"
 #include "mcp2515.h"
 #include "interrupt.h"
@@ -39,7 +39,7 @@ int main(){
 
     printf("HEI \n\r");
     while(1){
-
+    SRAM_test();
     
     if(mcp2515_check_bit(MCP_CANINTF,0)){
         message recieved = can_read();
