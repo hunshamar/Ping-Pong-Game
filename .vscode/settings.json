@@ -5,6 +5,7 @@
         "motor_controller.h": "c",
         "dac_driver.h": "c",
         "stdlib.h": "c",
-        "menu.h": "c"
+        "menu.h": "c",
+        "oled.h": "c"
     }
 }

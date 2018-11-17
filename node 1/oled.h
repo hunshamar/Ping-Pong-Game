@@ -22,12 +22,4 @@ void write_data(char character);
 
 
 
-
-
-
-
-
-
-
-
 #endif

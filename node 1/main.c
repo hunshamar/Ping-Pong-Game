@@ -10,8 +10,8 @@
 #include "SRAM.h"
 #include "adc_driver.h"
 #include "joystick.h"
+#include "menu.h"
 #include "oled.h"
-//#include "menu.h"
 #include "spi_driver.h"
 #include "mcp2515.h"
 #include "interrupt.h"
@@ -28,23 +28,34 @@ int main(){
     can_init();
     interrupt_init();
     sei();
-    
+    oled_init();
     //Declare variables
-    /*
+    
     message msg;
     msg.ID = 1;
     msg.length = 7;
-    int i = 0;
-    */
-
-    printf("HEI \n\r");
-    while(1){
-    SRAM_test();
+    //int i = 0;
     
+    printf("HEI \n\r");
+    oled_clear();
+
+    visual_menu();
+
+    int i = 0;
+    while(1){
+    
+
+    //printf("Slider L: %d ", slider_get_left_button_status());
+    /*
     if(mcp2515_check_bit(MCP_CANINTF,0)){
         message recieved = can_read();
-        printf("Mottatt can: %d %d \n\r", recieved.data[0],recieved.data[1]);
-    }
+        //printf("Mottatt can: %d %d \n\r", recieved.data[0],recieved.data[1]);
+    }*/
+
+
+    //printf("Joystick: %d %d %d %d \n\r", read_adc_channel(CHANNEL_1), read_adc_channel(CHANNEL_2), read_adc_channel(CHANNEL_3), read_adc_channel(CHANNEL_4));           ;
+    
+    
     /*
     msg.data[0] = read_adc_channel(CHANNEL_1); //x
     msg.data[1] = read_adc_channel(CHANNEL_2); //y
@@ -61,8 +72,6 @@ int main(){
     
     printf("sender X: %d Y: %d \n\r", msg.data[0], msg.data[1], msg.data[2]);
     */
-
-
 
     //printf("  mottatt x: %d \n\r", can_read().data[0]);
    }
@@ -107,10 +116,10 @@ while(1){
         /*
         for (int i = 0; i<64;i++){
             _delay_ms(20);
-            oled_write_data(i,0x00);
-        }
-
-        for (int i = 64; i<128;i++){
+            oled_write_data(i,0x0//visual_menu();0);
+        }//visual_menu();
+//visual_menu();
+        for (int i = 64; i<128;i+//visual_menu();+){
             _delay_ms(20);
             oled_write_data(i,0xFF);
         }*/
@@ -137,7 +146,7 @@ while(1){
     //}
 
     //adc_test();
-    //printf(" SVEIS ");
+    //printf(" SVEIS ");//visual_menu();
     //_delay_ms(2000);
     //SRAM_test();
     //_delay_ms(3000);

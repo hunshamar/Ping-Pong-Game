@@ -9,11 +9,11 @@ void interrupt_init(){
     TCCR3B |=  (1<<WGM32) | (1 << CS31) ; //Using prescalar 8
     TCNT3 = 0x00; //Setting counting registers initial value to 0
     
-    /*Interrupt to terminate game*/
+    /*Interrupt to terminate game
     DDRD |= (1<<PD2); //Using the PD2 as input
     PORTD |= (1<<PD2); // Putting the pin PD2 as high
     GICR |= (1<<INT0); // Enable interrupt on PIN0 
-    MCUCR |= (1<<ISC01); //Demanding a falling edge on the interrupt pn PD2
+    MCUCR |= (1<<ISC01); //Demanding a falling edge on the interrupt pn PD2*/
 }
 
 ISR(TIMER3_COMPA_vect){
@@ -37,7 +37,7 @@ ISR(TIMER3_COMPA_vect){
 
 }
 
-ISR(INT0_vect){
+/*ISR(INT0_vect){
     printf("Terminate game? INT funker");
     mcp2515_bit_modify(0b00000011,MCP_CANINTF,0b00000000);
-}
+}*/

@@ -1,237 +1,252 @@
 #include "menu.h"
 
+void oled_print_node_and_children(menu_element element, int elem_nr){
+    oled_print(element.print);
+    int i = 0;
+    oled_print("\n \n");
+    while( element.children[i] != NULL){
+        if((i == elem_nr) && (element.nr_children != -1)){
+            oled_print("->");
+        }
+        
+        else if(element.nr_children >= 0){
+            oled_print("  ");
+        }
+        oled_print(element.children[i]->print);
+        oled_print("\n");
+        i++;
+    }
+    i = 6-i;
+    while(i != 1 && element.nr_children != -1){
+        oled_print("\n");
+        i--;
+    }
+}
+
+void update_leaderboard(int score){
+    int temp_leaderboard[5];
+    int placing_index;
+    for (int i = 0; i < 5; i++){
+        if(LEADERBOARD[i]<score){
+            placing_index = i;
+        }
+        break;
+        }
+    for (int j = 0; j < placing_index; j++){
+        temp_leaderboard[j]=LEADERBOARD[j];
+    }
+    temp_leaderboard[placing_index]=score;
+    for (int n = placing_index+1; n < 4; n++){
+        temp_leaderboard[n]=LEADERBOARD[n+1];
+    }
+    for(int m = 0; m < 5; m++){
+        LEADERBOARD[m] = temp_leaderboard[m];
+    }
+}
+
+
 void visual_menu(){
 
-    char* str1 = "\n->Play game\n  Leaderboard\n  Credits\n \n \n \n";
-    char* str2 = "\n  Play game\n->Leaderboard\n  Credits\n \n \n \n";
-    char* str3 = "\n  Play game\n  Leaderboard\n->Credits\n \n \n \n ";
-    char* sub_str1_1 = "\n-> Rookie \n Expert\n \n \n \n \n \n";
-    char* sub_str1_2 = "\nRookie \n ->Expert\n \n \n \n \n \n";
-    int Leaderboard = [0,0,0,0,0];
-    char* Credits = "\n Eilef Olsen Osvik\n Martin Aalby Svalesen \n Asgeir Hunshamar \n In remembrance of heroic effort. \n Copyright 2018 \n \n";
-
-
-    char* menu[3] = {str1, str2, str3};
-    char* sub_menu_1[2] = {sub_str1_2,sub_str1_1};
-
-    int pos = 0;
-    oled_clear();
-    oled_print(menu[pos]);
+    int Leaderboard[5] = {0,0,0,0,0};
 
     joystick_init();
 
     menu_element main_menu;
-    
-    menu_element play_game;
-    play_game.parent = main_menu;
-    play_game.children[0] = gamemode;
-    play_game.nr_children = 1;
-    play_game.print = "Play game\n";
-
-    menu_element game_mode;
-    game_mode.parent = play_game;
-    game_mode.children[0] = rookie;
-    game_mode.children[1] = expert;
-    game_mode.nr_children = 2;
-    game_mode.print = "Select gamemode\n";
-
     menu_element rookie;
-    rookie.parent = play_game;
-    rookie.children = NULL;
-    rookie.print = "Rookie\n";
-
     menu_element expert;
-    expert.parent = play_game;
-    expert.print = "Expert\n";
+    menu_element game_mode;
+    menu_element credits_text;
+    menu_element highscore;
+
+    menu_element play_game;
+    play_game.parent = &main_menu;
+    play_game.children[0] = &expert;
+    play_game.children[1] = &rookie;
+    play_game.nr_children = 2;
+    play_game.print = "Play game";
+/*
+    game_mode.parent = &play_game;
+    game_mode.children[0] = &rookie;
+    game_mode.children[1] = &expert;
+    game_mode.nr_children = 2;
+    game_mode.print = "Select gamemode";
+*/
+    rookie.parent = &play_game;
+    rookie.children[0] = NULL;
+    rookie.print = "Rookie";
+
+    expert.parent = &play_game;
+    expert.print = "Expert";
 
     menu_element leaderboard;
-    leaderboard.parent = main_menu;
-    leaderboard.children = NULL;
-    leaderboard.nr_children = 0;
-    leaderboard.print = "Leaderboard\n";
+    leaderboard.parent = &main_menu;
+    leaderboard.children[0] = &highscore;
+    leaderboard.nr_children = -1;
+    leaderboard.print = "Leaderboard";
 
-    menu_element credits;
-    credits.parent = main_menu;
-    credits.children = NULL;
-    credits.nr_children = 0;
-    credits.print = "Credits\n";
 
-    menu_element credits_text;
-    credits_text.parent = credits;
-    credits_text.children = NULL;
-    credits_text.nr_children = 0;
-    credits_text.print = "\n Eilef Olsen Osvik\n Martin Aalby Svalesen \n Asgeir Hunshamar \n In remembrance of heroic effort. \n Copyright 2018 \n \n";
+        LEADERBOARD[0] = 1000;
+    LEADERBOARD[1] = 77;
+    LEADERBOARD[2] = 55;
+
+    char first_place[5]; 
+    char second_place[5];
+    char third_place[5];
+
+    char string[100];
+
+
+    itoa(LEADERBOARD[0], first_place, 10);
+    itoa(LEADERBOARD[1], second_place, 10);
+    itoa(LEADERBOARD[2], third_place, 10);
+
+    strcpy(string, "1. ");
+    strcat(string, first_place);
+    strcat(string, "\n2. ");
+    strcat(string, second_place);
+    strcat(string, "\n3. ");
+    strcat(string, third_place);
+
 
     
+
+    highscore.parent = & leaderboard;
+    highscore.children[0] = NULL;
+    highscore.nr_children = -1;
+    highscore.print = string;
+
+    menu_element credits;
+    credits.parent = &main_menu;
+    credits.children[0] = &credits_text;
+    credits.nr_children = -1;
+    credits.print = "Credits";
+
+    credits_text.parent = &credits;
+    credits_text.children[0] = NULL;
+    credits_text.nr_children = -1;
+    credits_text.print = "Eilef \nMartin \nAsgeir \n In remembrance of\n heroic effort";
+
     main_menu.parent = NULL;
-    main_menu.children[0] = play_game;
-    main_menu.children[1] =  leaderboard;
-    main_menu.children[2] = credits;
-    main_menu.print = "\n Main menu\n";
+    main_menu.children[0] = &play_game;
+    main_menu.children[1] =  &leaderboard;
+    main_menu.children[2] = &credits;
+    main_menu.print = " Main menu";
     main_menu.nr_children = 3;
 
+    int elem_nr = 0;
+    oled_clear();
     oled_print_node_and_children(main_menu,elem_nr);
 
     menu_element current_menu_element = main_menu;
     int current_pos = 0;
     int seconds;
     int game = 0;
-
+    
     while(1){
-        int x = joystick_get_x();
-        int y = joystick_get_y();
 
         message game_mode;
         game_mode.ID = 2;
         game_mode.length = 6;
         game_mode.data[0] = 1;
 
-        if(joystick_get_direction() == UP){
+
+        //if(joystick_get_direction() == UP){ //Joystick
+        if(slider_get_left_button_status() && current_pos != 0 && !slider_get_right_button_status()&& current_menu_element.nr_children != -1){
+            // trykk fra left button && ikke øverste element && ikke samtidig med right button && det ikke er credits
             oled_clear();
             current_pos--;
-            oled_print_node_and_children(current_menu_element,current_pos%current_menu_element.nr_children);
-            while(joystick_get_direction()!= NEUTRAL){
-                _delay_ms(50);}
+            oled_print_node_and_children(current_menu_element,current_pos % current_menu_element.nr_children);
+            //while(joystick_get_direction()!= NEUTRAL){
+            while(slider_get_left_button_status()){
+                _delay_ms(50);
+                }
         }
-
-        if(joystick_get_direction() == DOWN){
+        
+        //if(joystick_get_direction() == DOWN){
+        if(slider_get_right_button_status() && current_pos != current_menu_element.nr_children - 1 && !slider_get_left_button_status() && current_menu_element.nr_children != -1){
+            // trykk fra right button && ikke laveste elementet && ikke samtidig med left button && ikke credits siden
             oled_clear();
             current_pos++;
+            
             oled_print_node_and_children(current_menu_element,current_pos%current_menu_element.nr_children);
-            while(joystick_get_direction()!= NEUTRAL){
+            //while(joystick_get_direction()!= NEUTRAL){
+            while(slider_get_right_button_status()){
                 _delay_ms(50);}
         }
-
-        if((joystick_get_direction() == RIGHT) && ((current_menu_element.children != NULL))){
-                oled_clear();
-                current_menu_element = current_menu_element.children[current_pos];
-                current_pos = 0;
-
-                if(current_menu_element = rookie){
-                    game_mode.data[0] = "Rookie";
-                    sec = 0;
-                    can_write(game_mode);
-                    game = TRUE;
-                    while(game){
-                        _delay_ms(1000);
-                        sec++;
-                        oled_clear();
-                        oled_print(sec);
-                        if(mcp2515_check_bit(MCP_CANINTF,0)){
-                            game = FALSE;
-                            mcp2515_bit_modify(0b00000011,MCP_CANINTF,0b00000000);
-                        }
-                    }
-                    update_leaderboard(sec);
-                    current_menu_element = leaderboard;
-
-                }
-                else if(current_menu_element = expert){
-                    game_mode.data[0] = "Expert";
-                    sec = 0;
-                    can_write(game_mode);
-                    while(game){
-                        _delay_ms(1000);
-                        sec++;
-                        oled_clear();
-                        oled_print(sec);
-                        if(mcp2515_check_bit(MCP_CANINTF,0)){
-                            game = FALSE;
-                            mcp2515_bit_modify(0b00000011,MCP_CANINTF,0b00000000);
-                        }
-                    }
-                    update_leaderboard(sec);
-                    current_menu_element = leaderboard;
-                }
-
-                oled_print_node_and_children(current_menu_element,current_pos);
-                while(joystick_get_direction()!= NEUTRAL){
-                    _delay_ms(50);}
-            }
-        if((joystick_get_direction() == LEFT) &&(current_menu_element.parent != NULL)){
+        
+        //if((joystick_get_direction() == RIGHT) && ((current_menu_element.children != NULL))){
+        if(joystick_get_button_status()){
             oled_clear();
-            current_menu_element = current_menu_element.parent;
+            current_menu_element = *current_menu_element.children[current_pos];
+            current_pos = 0;
+            oled_print_node_and_children(main_menu,1);
+
+            if(&current_menu_element == &rookie){
+                game_mode.data[0] = 'R';
+                can_write(game_mode);
+                game = 0; // Spille spillet?
+                int sec = 0;
+                while(game){
+                    _delay_ms(1000);
+                    sec++;
+                    oled_clear();
+                    oled_print((char*)(sec));
+                    if(mcp2515_check_bit(MCP_CANINTF,0)){
+                        game = 0;
+                        mcp2515_bit_modify(0b00000011,MCP_CANINTF,0b00000000);
+                    }
+                
+                update_leaderboard(sec);
+                current_menu_element = leaderboard;
+                }
+            
+            }
+            else if(&current_menu_element == &expert){
+                game_mode.data[0] = 'E';
+                int sec = 0;
+                can_write(game_mode);
+                game = 0; // spille spillet?
+                while(game){
+                    _delay_ms(1000);
+                    sec++;
+                    oled_clear();
+                    oled_print((char*)(sec));
+                    if(mcp2515_check_bit(MCP_CANINTF,0)){
+                        game = 0;
+                        mcp2515_bit_modify(0b00000011,MCP_CANINTF,0b00000000);
+                    }
+                }
+                update_leaderboard(sec);
+                current_menu_element = leaderboard;
+            }
+            oled_clear();
+            oled_print_node_and_children(current_menu_element,current_pos);
+            //while(joystick_get_direction()!= NEUTRAL){
+            while(joystick_get_button_status()){
+                _delay_ms(50);}
+
+            }
+    
+        //if((joystick_get_direction() == LEFT) &&(current_menu_element.parent != NULL)){
+        if(slider_get_left_button_status() && slider_get_right_button_status()){
+            oled_clear();
+            current_menu_element = *current_menu_element.parent;
             current_pos = 0;
             oled_print_node_and_children(current_menu_element,current_pos);
-            while(joystick_get_direction()!= NEUTRAL){
+            //while(joystick_get_direction()!= NEUTRAL){
+            while(slider_get_left_button_status() && slider_get_right_button_status()){
                 _delay_ms(50);}
         }
-    }
-
-
-
-
-
-
-
-
-
-
-    while(!slider_get_right_button_status()){
-        int x = joystick_get_x();
-        int y = joystick_get_y();
-
-        //oled_init();
-        if(joystick_get_direction() == UP){
-            printf("%d\n\r", pos%3);
-            pos += 1;
-            oled_clear();
-            oled_print(menu[pos%3]);
-            while(joystick_get_direction()!= NEUTRAL){
-                _delay_ms(50);
-            }
-        }
-        else if (joystick_get_direction() == DOWN){
-            printf("%d\n\r", pos%3);
-            pos -= 1;
-            if(pos == -1){
-                pos = 2;
-            }
-            oled_clear();
-            oled_print(menu[pos%3]);
-            while(joystick_get_direction()!= NEUTRAL){
-                _delay_ms(50);
-            }
-        }
-
-        if(joystick_get_direction() == RIGHT){
-            oled_clear();
-            oled_print(sub_menu[pos%3]);
-            while(!joystick_get_button_status()){
-
-            }
-            oled_clear();
-            oled_print(menu[pos%3]);
-        }
-        
-
-        
     }
 
     //oled_clear();
 
     //oled_print("menu exit\n\n\n\n\n\n\n");
-
-void update_leaderboard(int score){
-    temp_leaderboard[5];
-    int placing_index;
-    for (i=0;i<5;i++){
-        if(Leaderboard[i]<score){
-            placing_index = i;
-        }
-        break;
-    for (i = 0; i < placing_index;i++){
-        temp_leaderboard[i]=Leaderboard[i];
-    }
-    temp_leaderboard[placing_index]=score;
-    for (i = placing_index+1;i<4;i++){
-        temp_leaderboard[i]=Leaderboard[i+1];
-    }
-    Leaderboard = temp_leaderboard;
-}
+/*
 
 void game_fsm(gamemode mode){
-    switch(mode){
+    switch(mode){    oled_print_node_and_children(main_menu,1);
+    
         case ROOKIE:
             int game_score = playgame_rookie();
             update_leaderboard(game_score);
@@ -244,6 +259,6 @@ void game_fsm(gamemode mode){
 
             break;
         case 
-    }
+    }*/
 }
 
