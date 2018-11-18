@@ -26,7 +26,7 @@ int main(){
     SRAM_init();
     joystick_init();
     can_init();
-    interrupt_init();
+    //interrupt_init();
     sei();
     oled_init();
     //Declare variables
@@ -35,14 +35,24 @@ int main(){
     msg.ID = 1;
     msg.length = 7;
     //int i = 0;
-    
-    printf("HEI \n\r");
+    printf("ikke");
+    //oled_clear();
     oled_clear();
+    oled_print("mammm");
+
+
+    //SRAM_test();
+    //printf(" kl  df  \n\r");
 
     visual_menu();
 
-    int i = 0;
-    while(1){
+
+   
+
+    
+    
+   
+    while(0){
     
 
     //printf("Slider L: %d ", slider_get_left_button_status());
@@ -53,7 +63,7 @@ int main(){
     }*/
 
 
-    //printf("Joystick: %d %d %d %d \n\r", read_adc_channel(CHANNEL_1), read_adc_channel(CHANNEL_2), read_adc_channel(CHANNEL_3), read_adc_channel(CHANNEL_4));           ;
+    printf("Joystick: %d %d %d %d \n\r", read_adc_channel(CHANNEL_1), read_adc_channel(CHANNEL_2), read_adc_channel(CHANNEL_3), read_adc_channel(CHANNEL_4));           ;
     
     
     /*

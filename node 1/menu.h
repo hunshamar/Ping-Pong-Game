@@ -8,6 +8,10 @@
 #include "stdlib.h"
 #include <string.h>
 
+
+
+
+
 int LEADERBOARD[5];
 typedef enum gamemode{
     rookie1,

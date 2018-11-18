@@ -49,6 +49,8 @@ int can_transmit_complete(){
 
 message can_read(){
 
+
+
     message msg;
     if(mcp2515_check_bit(MCP_CANINTF,1)){
         uint8_t ID_high = mcp2515_read(MCP_RXB1SIDH);
@@ -78,6 +80,7 @@ message can_read(){
         printf("can error \n\r");
 
     }
+
     //printf("\n\r----------\n\r\n\r ");
     //    printf("FERDIG");
 
@@ -87,8 +90,14 @@ message can_read(){
 
 int can_update(){
     if (mcp2515_check_bit(MCP_CANINTF,1)){ //Fått ny melding
-            RECIEVED = can_read();
-            return 1;
+        message r = can_read();
+        if (r.ID == 1){
+            RECIEVED = r;
+        }
+        else if (r.ID == 2){
+            GAME_INFO = r;
+        }
+        return 1;
         }
     return 0;
 }

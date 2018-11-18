@@ -5,7 +5,7 @@ void can_init(){ //initializes the CAN bus
     spi_init();
 
     mcp2515_reset();
-    mcp2515_bit_modify(0b11100000,MCP_CANCTRL,MODE_LOOPBACK); //Setting the mcp2515 to normal mode
+    mcp2515_bit_modify(0b11100000,MCP_CANCTRL,MODE_NORMAL); //Setting the mcp2515 to normal mode
     mcp2515_bit_modify(0x60, MCP_RXB0CTRL, 0b01100000); //recieve buffer 0 control 
 
     mcp2515_bit_modify(0b1, MCP_CANINTE, 0b00000001); //sets the RX0IE bit in CANINTE and enables the RXOIF flag
@@ -43,6 +43,7 @@ message can_read(){ //reads a message from the CAN bus
         uint8_t ID_high = mcp2515_read(MCP_RXB0SIDH);
         uint8_t ID_low = mcp2515_read(MCP_RXB0SIDL);
         msg.ID = (ID_high << 3) | (ID_low >> 5); //11 bit adress
+        //printf("idid: ")
 
         msg.length = mcp2515_read(MCP_RXB0DLC) & 0x0F; //reading 4 LSB
       

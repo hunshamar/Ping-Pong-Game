@@ -6,6 +6,8 @@
         "dac_driver.h": "c",
         "stdlib.h": "c",
         "menu.h": "c",
-        "oled.h": "c"
+        "oled.h": "c",
+        "can_driver.h": "c",
+        "uart_driver.h": "c"
     }
 }

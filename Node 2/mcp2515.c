@@ -9,6 +9,7 @@ void slave_deselect(){
 }
 
 uint8_t mcp2515_read(uint8_t address){
+    
     uint8_t result;
     slave_select(); 
     spi_master_write(MCP_READ);
@@ -41,6 +42,7 @@ void mcp2515_rts(uint8_t rts){
 }
 
 uint8_t mcp2515_read_status(){
+
     slave_select();
     spi_master_write(MCP_READ_STATUS);
     uint8_t result = spi_master_read();

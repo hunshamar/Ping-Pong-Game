@@ -28,6 +28,7 @@ void oled_write_char(uint8_t character){
 }
 
 void oled_print(char* s){
+
     int i= 0;
     while(s[i] != 0){
 

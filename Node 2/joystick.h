@@ -1,9 +1,9 @@
 #ifndef __JOYSTICK_H_
 #define __JOYSTICK_H_
 #include <stdint.h>
-#include<stdio.h>
-#include<math.h>
-#include<string.h>
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
 #include "can_driver.h"
 
 #include <avr/io.h>
