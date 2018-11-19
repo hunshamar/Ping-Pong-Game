@@ -21,7 +21,8 @@
 
 int main(){
 
-    
+
+ 
     //Initializing modules
     uart_init(9600);
     SRAM_init();

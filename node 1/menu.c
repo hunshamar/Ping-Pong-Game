@@ -26,7 +26,7 @@ void oled_print_node_and_children(menu_element element, int elem_nr){
 }
 void update_leaderboard(int score){
 
-    printf("score: %d", score);
+    printf("score: %d \n\r", score);
     int temp_leaderboard[3];
     if(score > LEADERBOARD[0]){
         temp_leaderboard[0] = score;
@@ -47,15 +47,14 @@ void update_leaderboard(int score){
     for(int i = 0; i<3;i++){
         LEADERBOARD[i]= temp_leaderboard[i];
     }
-    printf("LEADERBOARD[0], ", LEADERBOARD[0]);
+    /*printf("LEADERBOARD[0], ", LEADERBOARD[0]);
     printf("LEADERBOARD[1], ", LEADERBOARD[1]);
     printf("LEADERBOARD[2] ", LEADERBOARD[2]);
+    */
 }
 
 void visual_menu(){
       
-
-    int Leaderboard[5] = {0,0,0,0,0};
     joystick_init();
     
     menu_element main_menu;
@@ -92,9 +91,7 @@ void visual_menu(){
     leaderboard.print = "Leaderboard";
 
 
-    LEADERBOARD[0] = 1000;
-    LEADERBOARD[1] = 77;
-    LEADERBOARD[2] = 55;
+    int sec = 0;
 
     char first_place[5]; 
     char second_place[5];
@@ -188,18 +185,23 @@ void visual_menu(){
             if(current_menu_element.print == "Rookie"){
                 game_mode.data[0] = 'R';
                 game = 1; // Spille spillet?
-                int sec = 0;
                 
+                
+            
+            
+
+
+
                 oled_clear();
                 can_write(game_mode);
                 oled_print("Playing rookie \n mode \n\n\n\n\n\n");
                 while(game){
-                    //can_send_actuator_signals();
-
                     can_send_actuator_signals();
-
                     sec++;
-                    //oled_print((char*)(sec));
+
+                    /* **/
+
+
                     if(can_check_recieved_flag()){
                         game = 0;
                         game_mode.data[0] = 0; //game is over
@@ -212,13 +214,13 @@ void visual_menu(){
             }
             else if(current_menu_element.print == "Expert"){
                 game_mode.data[0] = 'E';
-                int sec = 0;
                 game = 1; // Play the game?
                 
+                can_write(game_mode);
                 oled_clear();
                 oled_print("Playing expert \nmode \n\n\n\n\n\n");
                 while(game){
-                    can_write(game_mode);
+                    can_send_actuator_signals();
                     sec++;
                     if(can_check_recieved_flag()){
                         game = 0;
@@ -228,7 +230,6 @@ void visual_menu(){
                 }
                 update_leaderboard(sec);
                 current_menu_element = leaderboard;
-    visual_menu();
             }
 
             oled_clear();
@@ -239,15 +240,18 @@ void visual_menu(){
                 }
             }
     
-        if((slider_get_left_button_status() &&(current_menu_element.parent != NULL)){
+        if((slider_get_left_button_status()) && (current_menu_element.parent != NULL)){
         //if(slider_get_left_button_status() && slider_get_right_button_status()){
             oled_clear();
             current_menu_element = *current_menu_element.parent;
             current_pos = 0;
             oled_print_node_and_children(current_menu_element,current_pos);
             //while(joystick_get_direction()!= NEUTRAL){
-            while(joystick_get_direction()){
-                _delay_ms(50);}
+            while(slider_get_left_button_status()){
+                _delay_ms(50);
+            }
         }
     }
+
+    printf("SCore:  %d \n\r", sec);
 }

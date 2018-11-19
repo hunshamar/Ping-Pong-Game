@@ -20,7 +20,6 @@ void can_write(message msg){
     mcp2515_write(MCP_TXB0SIDH, (uint8_t)(msg.ID >> 3)); //8 MSB
     mcp2515_bit_modify(0b11100000, MCP_TXB0SIDL, (uint8_t)(msg.ID << 5));  //3 LSB
 
-    printf("ID: %d", msg.ID);
     //Configures the datalength in DLC register.
     mcp2515_bit_modify(0b00001111,MCP_TXB0DLC,msg.length);
     

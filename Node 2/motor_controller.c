@@ -52,6 +52,7 @@ uint16_t get_encoder_data(){
     PORTH |= (1<<PH6);
     PORTH |= (1 << PH5); //output disable
     sei();
+
     return data;
 }
 

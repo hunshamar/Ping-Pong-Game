@@ -8,9 +8,9 @@
 
 void joystick_init(){
 
-    while(RECIEVED.ID != 1){
+    /*while(RECIEVED.ID != 1){
         can_update();
-    }
+    }*/
 
     x_offset = 132; // RECIEVED.data[0];
     y_offset = 132; //RECIEVED.data[1];

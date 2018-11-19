@@ -17,9 +17,6 @@ void game_play(MODE m){
 
     int playing = 1;
     while(playing){
-        printf("Can status: %d          *** ", can_update());
-        printf("y::  %d", joystick_get_raw_y());
-        printf("ACD read %d \n\r", adc_read());
         
         
         can_update();
@@ -27,8 +24,17 @@ void game_play(MODE m){
         int motor_thrust = 0;
 
         if (m == MODE_POSITION){
+
             int position = (get_encoder_data()*-1)/87.65;
-            motor_thrust = (slider_get_right_pos(),position,&pi);
+            if (position > 300)
+                position = 0;
+
+            if (position > 100 & position < 300)
+                position = 100;
+
+            motor_thrust = PI_Controller(slider_get_right_pos(),position,&pi);
+            printf("slider: %d   ", slider_get_right_pos());
+            printf("pos: %d \n\r", position);
         }
         else if (m == MODE_SPEED)
         {
@@ -44,11 +50,13 @@ void game_play(MODE m){
         {
             printf("Shoot! \n\r");
             solenoid_shoot();
+
         }
         if(adc_read() <= 100){
             printf("Sending ");
             can_write(terminate_game);
             playing =0;
+            send_voltage(0);
         } 
     } 
 } 
@@ -78,3 +86,9 @@ void game_hardware_test(int time){
 
 
 }
+
+
+
+
+
+

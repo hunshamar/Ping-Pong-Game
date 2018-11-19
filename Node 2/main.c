@@ -47,6 +47,7 @@ int main(){
     dac_init();
     motor_controller_init();
     joystick_init();
+    printf("aa\n\r");
 
     sei();
 
@@ -61,6 +62,12 @@ int main(){
 
     int asd = 1;
     */
+   PORTH &= ~(1 << PINH1); //left direction
+   send_voltage(70);
+   _delay_ms(2000);
+   get_encoder_data();
+   send_voltage(0);
+   
 
     int asd = 1;
     printf("før while løkka");
