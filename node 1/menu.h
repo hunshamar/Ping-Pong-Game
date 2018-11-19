@@ -12,7 +12,7 @@
 
 
 
-uint8_t LEADERBOARD[3];
+int LEADERBOARD[3];
 typedef enum gamemode{
     rookie1,
     expert1    
@@ -32,5 +32,8 @@ typedef struct menu_element {
 void oled_print_node_and_children(menu_element element, int elem_nr);
 
 char* menu_update_leaderboard();
+
+
+char* menu_score_string_update();
 
 #endif

@@ -47,7 +47,6 @@ int main(){
     dac_init();
     motor_controller_init();
     joystick_init();
-    printf("aa\n\r");
 
     sei();
 
@@ -78,12 +77,12 @@ int main(){
     if (GAME_INFO.data[0] == 'R'){ //Checking if the game is started in rookie mode
         printf("rookie");
         game_play(MODE_SPEED);
-        asd = 0;
+        asd = 1;
         }
     else if(GAME_INFO.data[0] == 'E'){ //Checking if the game is started in Expert mode
         printf("Expert");
         game_play(MODE_POSITION);
-        asd = 0;
+        asd = 1;
         }
     GAME_INFO.data[0] = 0;
     }

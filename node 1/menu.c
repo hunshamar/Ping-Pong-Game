@@ -1,5 +1,30 @@
 #include "menu.h"
 
+
+char* menu_score_string_update(){
+
+    char first_place[8]; 
+    char second_place[8];
+    char third_place[8];
+
+    char string[100];
+    
+    itoa(LEADERBOARD[0], first_place, 10);
+    itoa(LEADERBOARD[1], second_place, 10);
+    itoa(LEADERBOARD[2], third_place, 10);
+
+    strcpy(string, "1. ");
+    strcat(string, first_place);
+    strcat(string, "\n2. ");
+    strcat(string, second_place);
+    strcat(string, "\n3. ");
+    strcat(string, third_place);
+    strcat(string, "\n\n");
+
+    return string;
+    
+}
+
 void oled_print_node_and_children(menu_element element, int elem_nr){
 
     oled_print_font(element.print, 8);
@@ -29,13 +54,16 @@ void update_leaderboard(int score){
     printf("score: %d \n\r", score);
     int temp_leaderboard[3];
     if(score > LEADERBOARD[0]){
-        temp_leaderboard[0] = score;
+        
         temp_leaderboard[1] = LEADERBOARD[0];
         temp_leaderboard[2] = LEADERBOARD[1];
+        temp_leaderboard[0] = score;
+        printf("temp leaderboard: %d ", temp_leaderboard[0]);
+        
     }else if(score > LEADERBOARD[1]){
         temp_leaderboard[0]= LEADERBOARD[0];
-        temp_leaderboard[1] = score;
         temp_leaderboard[2] = LEADERBOARD[1];
+        temp_leaderboard[1] = score;
     }else if(score > LEADERBOARD[2]){
         temp_leaderboard[0] = LEADERBOARD[0];
         temp_leaderboard[1] = LEADERBOARD[1];
@@ -92,10 +120,10 @@ void visual_menu(){
 
 
     int sec = 0;
-
-    char first_place[5]; 
-    char second_place[5];
-    char third_place[5];
+    /*
+    char first_place[8]; 
+    char second_place[8];
+    char third_place[8];
 
     char string[100];
     
@@ -110,7 +138,9 @@ void visual_menu(){
     strcat(string, "\n3. ");
     strcat(string, third_place);
     strcat(string, "\n\n");
+    */
 
+    char* string = menu_score_string_update();
 
     highscore.parent = & leaderboard;
     highscore.children[0] = NULL;
@@ -186,7 +216,7 @@ void visual_menu(){
                 game_mode.data[0] = 'R';
                 game = 1; // Spille spillet?
                 
-                
+                sec = 0;
             
             
 
@@ -201,15 +231,47 @@ void visual_menu(){
 
                     /* **/
 
+                    char seconds_string[5]; 
+
+                    char score_string[100];
+                    
+                    itoa(sec, seconds_string, 10);
+
+                    strcpy(score_string, "Score. ");
+                    strcat(score_string, seconds_string);
+
+                    if(sec % 20 == 0){
+                        oled_clear();
+                        oled_print(score_string);
+                        oled_print("\n\n\n\n\n\n\n");
+                    }
+
+                /****** **********/
+
 
                     if(can_check_recieved_flag()){
                         game = 0;
                         game_mode.data[0] = 0; //game is over
+                        can_write(game_mode);
                         can_read(); //To remove the flag 
                     }
                 }
+
+        /*** **/
+
+
+
+
+        /*** **/
+
+
             update_leaderboard(sec);
+            
+            char* string = menu_score_string_update();
+
+    highscore.print = string;
             current_menu_element = leaderboard;
+            //sec = 0;
             
             }
             else if(current_menu_element.print == "Expert"){

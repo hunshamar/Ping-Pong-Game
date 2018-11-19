@@ -19,10 +19,13 @@
 #include "can_driver.h"
 
 
+
+
 int main(){
+    
 
 
- 
+
     //Initializing modules
     uart_init(9600);
     SRAM_init();
@@ -37,7 +40,13 @@ int main(){
     msg.ID = 1;
 
 
-    printf("starter node 1");
+
+
+
+
+   
+
+    printf("starter node 1  :) \n\r");
 
     
     msg.length = 7;
