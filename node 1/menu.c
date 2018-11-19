@@ -74,12 +74,28 @@ void menu_update_leaderboard(int score){
     }
 }
 
-void menu_run(){
-    
-    char* star_wars_strings[50] = {"","","","","","","","A long time", "ago in", "a sanntidssal", "far", "far away...", "","","","","","","",};
+
+char* menu_get_score_string(int sec){
+
+                    char seconds_string[5]; 
+
+                    char score_string[100];
+                    
+                    itoa(sec, seconds_string, 10);
+
+                    strcpy(score_string, "Score. ");
+                    strcat(score_string, seconds_string);
+
+                    return score_string;
+
+}
+
+void menu_run_intro(){
+
+    char* star_wars_strings[25] = {"","","","","","","","A long time", "ago in", "a sanntidssal", "far", "far away...", "","","","","","","","",""};
 
     joystick_init();
-    for(int i = 0; i < 12; i++){
+    for(int i = 0; i < 13; i++){
         
         for(int j = 0; j < 7; j++){
         oled_print_font(star_wars_strings[j+i],8);
@@ -103,8 +119,14 @@ void menu_run(){
         ;
     }
     oled_clear;
-    
+}
 
+
+
+
+void menu_run(){
+    
+    menu_run_intro();
     
     
     
@@ -139,6 +161,7 @@ void menu_run(){
     int sec = 0;
 
     char* string = menu_score_string_update();
+    char* score_string;
 
     highscore.parent = & leaderboard;
     highscore.children[0] = NULL;
@@ -170,8 +193,8 @@ void menu_run(){
     menu_element current_menu_element = main_menu;
     uint8_t current_pos = 0;
     uint8_t game = 0;
-    
-    while(1){
+
+        while(1){
         
         message game_mode;
         game_mode.ID = 2;
@@ -198,7 +221,7 @@ void menu_run(){
             while(joystick_get_direction()){
                 _delay_ms(50);}
         }
-        
+        sec = 0;
         if((joystick_get_direction() == RIGHT) && ((current_menu_element.nr_children != -1))){
 
             oled_clear();
@@ -210,35 +233,21 @@ void menu_run(){
                 game_mode.data[0] = 'R';
                 game = 1; // Spille spillet?
                 
-                sec = 0;
-            
-            
 
-
+            
 
                 oled_clear();
                 can_write(game_mode);
                 oled_print("Playing rookie \n mode \n\n\n\n\n\n");
                 while(game){
                     can_send_actuator_signals();
-                    sec++;
-
-                    char seconds_string[5]; 
-
-                    char score_string[100];
-                    
-                    itoa(sec, seconds_string, 10);
-
-                    strcpy(score_string, "Score. ");
-                    strcat(score_string, seconds_string);
-
-                    if(sec % 20 == 0){
+                    sec+=2;
+                    score_string = menu_get_score_string(sec);
+                    if(sec % 100 == 0){
                         oled_clear();
                         oled_print(score_string);
                         oled_print("\n\n\n\n\n\n\n");
                     }
-
-
 
                     if(can_check_recieved_flag()){
                         game = 0;
@@ -248,14 +257,12 @@ void menu_run(){
                     }
                 }
 
-
-
-            menu_update_leaderboard(sec);
+                menu_update_leaderboard(sec);
             
-            char* string = menu_score_string_update();
+                char* string = menu_score_string_update();
 
-    highscore.print = string;
-            current_menu_element = leaderboard;
+                highscore.print = string;
+                current_menu_element = leaderboard;
             
             }
             else if(current_menu_element.print == "Expert"){
@@ -267,23 +274,38 @@ void menu_run(){
                 oled_print("Playing expert \nmode \n\n\n\n\n\n");
                 while(game){
                     can_send_actuator_signals();
-                    sec++;
+                    sec+=2;
+
+                    score_string = menu_get_score_string(sec);
+
+                    if(sec % 100 == 0){
+                        oled_clear();
+                        oled_print(score_string);
+                        oled_print("\n\n\n\n\n\n\n");
+                    }
+
+
                     if(can_check_recieved_flag()){
                         game = 0;
                         game_mode.data[0] = 0;
+                        can_write(game_mode);
                         can_read();
                     }
                 }
                 menu_update_leaderboard(sec);
+            
+                char* string = menu_score_string_update();
+
+                highscore.print = string;
                 current_menu_element = leaderboard;
             }
-
+                
             oled_clear();
             menu_oled_print_node_and_children(current_menu_element,current_pos);
             while(joystick_get_direction()){
                 _delay_ms(50);
-                }
             }
+        }
     
         if((slider_get_left_button_status()) && (current_menu_element.parent != NULL)){
             oled_clear();
