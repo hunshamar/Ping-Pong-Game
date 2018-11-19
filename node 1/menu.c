@@ -25,7 +25,7 @@ char* menu_score_string_update(){
     
 }
 
-void menu_oled_print_node_and_children(menu_element element, int elem_nr){
+void menu_oled_print_node_and_children(menu_element element, int elem_nr){ //Printing each menu screen
 
     oled_print_font(element.print, 8);
     int i = 0;
@@ -75,22 +75,22 @@ void menu_update_leaderboard(int score){
 }
 
 
-char* menu_get_score_string(int sec){
+char* menu_get_score_string(int sec){ //Combines char with int for easy oled-printing
 
-                    char seconds_string[5]; 
+    char seconds_string[5]; 
 
-                    char score_string[100];
-                    
-                    itoa(sec, seconds_string, 10);
+    char score_string[100];
+    
+    itoa(sec, seconds_string, 10);
 
-                    strcpy(score_string, "Score. ");
-                    strcat(score_string, seconds_string);
+    strcpy(score_string, "Score. ");
+    strcat(score_string, seconds_string);
 
-                    return score_string;
+    return score_string;
 
 }
 
-void menu_run_intro(){
+void menu_run_intro(){ //Star wars intro + "ping pong game" screen
 
     char* star_wars_strings[25] = {"","","","","","","","A long time", "ago in", "a sanntidssal", "far", "far away...", "","","","","","","","",""};
 
@@ -128,8 +128,6 @@ void menu_run(){
     
     menu_run_intro();
     
-    
-    
     menu_element main_menu;
     menu_element rookie;
     menu_element expert;
@@ -160,7 +158,7 @@ void menu_run(){
 
     int sec = 0;
 
-    char* string = menu_score_string_update();
+    char* string = menu_score_string_update(); //Empty scoreboard
     char* score_string;
 
     highscore.parent = & leaderboard;
@@ -185,13 +183,13 @@ void menu_run(){
     main_menu.children[2] = &credits;
     main_menu.print = "Main menu";
     main_menu.nr_children = 3;
-
-    uint8_t elem_nr = 0;
+    
+    uint8_t current_pos = 0;
     oled_clear();
-    menu_oled_print_node_and_children(main_menu,elem_nr);
+    menu_oled_print_node_and_children(main_menu,current_pos);
 
     menu_element current_menu_element = main_menu;
-    uint8_t current_pos = 0;
+    
     uint8_t game = 0;
 
         while(1){
@@ -200,30 +198,33 @@ void menu_run(){
         game_mode.ID = 2;
         game_mode.length = 6;
         game_mode.data[0] = 1;
-
-        if(joystick_get_direction() == UP && current_pos != 0 && current_menu_element.nr_children != -1){ //Joystick
-            // trykk fra left button && ikke øverste element && det ikke er credits
+        /* Activated when joystick goes up and its not the upper element and not the credits */
+        if(joystick_get_direction() == UP && current_pos != 0 && current_menu_element.nr_children != -1){ //Increments menu up
+            
             oled_clear();
             current_pos--;
             menu_oled_print_node_and_children(current_menu_element,current_pos % current_menu_element.nr_children);
-            while(joystick_get_direction()){
-                _delay_ms(50);
+
+            while(joystick_get_direction()){ //waiting for the joystick to return to neutral
+                _delay_ms(50); // waiting in case the joystick bounces
                 }
         }
-        
-        if(joystick_get_direction() == DOWN && current_pos != current_menu_element.nr_children - 1 && current_menu_element.nr_children != 1){
-               // trykk fra right button && ikke laveste elementet && ikke samtidig med left button && ikke credits siden
+        /* Activated when the joystick goes down and its not the lowest element and not the credits*/
+        if(joystick_get_direction() == DOWN && current_pos != current_menu_element.nr_children - 1 && current_menu_element.nr_children != 1){ // decrements the menu down
             oled_clear();
             current_pos++;
             
             menu_oled_print_node_and_children(current_menu_element,current_pos%current_menu_element.nr_children);
 
-            while(joystick_get_direction()){
-                _delay_ms(50);}
+            while(joystick_get_direction()){ //Waiting for the joystick to return to neutral
+                _delay_ms(50); //waiting in case the joystick bounces back
+                }
         }
         sec = 0;
-        if((joystick_get_direction() == RIGHT) && ((current_menu_element.nr_children != -1))){
 
+        /* Activated when joystick goes right and there are no further rights to go*/
+        if((joystick_get_direction() == RIGHT) && ((current_menu_element.nr_children != -1))){ //selects a meny option
+            
             oled_clear();
             current_menu_element = *current_menu_element.children[current_pos];
             current_pos = 0;
@@ -242,6 +243,7 @@ void menu_run(){
                 while(game){
                     can_send_actuator_signals();
                     sec+=2;
+
                     score_string = menu_get_score_string(sec);
                     if(sec % 100 == 0){
                         oled_clear();
@@ -272,6 +274,8 @@ void menu_run(){
                 can_write(game_mode);
                 oled_clear();
                 oled_print("Playing expert \nmode \n\n\n\n\n\n");
+void menu_
+
                 while(game){
                     can_send_actuator_signals();
                     sec+=2;
