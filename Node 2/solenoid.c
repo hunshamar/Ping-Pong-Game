@@ -7,7 +7,7 @@ void solenoid_init(){
 }
 
 void solenoid_shoot(){
-    PORTB &= ~(1<<PB4);
+    PORTB &= ~(1<<PB4); // Styrer solenoide 
     _delay_ms(1400);
     PORTB |= (1<<PB4);
 }

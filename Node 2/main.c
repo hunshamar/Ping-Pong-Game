@@ -36,32 +36,45 @@ int main(){
 
     /* Initializing */
     uart_init(9600);
-
+    
     printf("HEI \n\r");
     pwm_init();
     spi_init();
     can_init();
     solenoid_init();
-    joystick_init();
+    //joystick_init();
     adc_init();
     dac_init();
     motor_controller_init();
-    
+    joystick_init();
+
     sei();
-   int asd = 1;
+
+    printf("asdasd");
+    /*
+    while(1){
+        can_update();
+
+        printf("x: %d   y: %d \n\r", RECIEVED.data[0], RECIEVED.data[1]);
+        }
 
 
+    int asd = 1;
+    */
+
+    int asd = 1;
+    printf("før while løkka");
    while(asd){
-    
+    printf("Velg gamemode \n\r");
     can_update();
-
+    
     if (GAME_INFO.data[0] == 'R'){ //Checking if the game is started in rookie mode
-        printf("asd");
+        printf("rookie");
         game_play(MODE_SPEED);
         asd = 0;
         }
     else if(GAME_INFO.data[0] == 'E'){ //Checking if the game is started in Expert mode
-        printf("asd");
+        printf("Expert");
         game_play(MODE_POSITION);
         asd = 0;
         }
@@ -72,12 +85,9 @@ int main(){
     nah.ID = 2;
     nah.length = 1;
     nah.data[0] = 1;
-    
+
     PIData_t pi;
     PI_Init(250,10,&pi);
-
-
-    int i = 0;
 
 
 

@@ -1,5 +1,6 @@
 #include "can_driver.h"
 
+
 void can_init(){
 
     spi_init();
@@ -93,11 +94,13 @@ int can_update(){
         message r = can_read();
         if (r.ID == 1){
             RECIEVED = r;
+            return 1;
         }
         else if (r.ID == 2){
             GAME_INFO = r;
+            return 2;
         }
-        return 1;
+    
         }
     return 0;
 }

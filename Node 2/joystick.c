@@ -8,10 +8,12 @@
 
 void joystick_init(){
 
-    RECIEVED = can_read();
+    while(RECIEVED.ID != 1){
+        can_update();
+    }
 
-    x_offset = RECIEVED.data[0];
-    y_offset = RECIEVED.data[1];
+    x_offset = 132; // RECIEVED.data[0];
+    y_offset = 132; //RECIEVED.data[1];
 
 }
 
@@ -151,7 +153,6 @@ int slider_get_right_button_status(){
 
 void joystick_to_pwm(int x){
     int p = (x+100)/2; //fra 0 til 100%
-    printf("p: %d  ", p);
 
     int a = ((double)(PWMMAX-PWMMIN))*((double)p)/100.0+PWMMIN;
 

@@ -4,10 +4,11 @@
 
 
 
-void game_play(MODE m)
-{   
+void game_play(MODE m){
     PIData_t pi;
     PI_Init(250,10,&pi);
+
+
     
     message terminate_game;
     terminate_game.ID = 3;
@@ -16,9 +17,11 @@ void game_play(MODE m)
 
     int playing = 1;
     while(playing){
-        printf("WHILE LØKKE ER \n\r");
+        printf("Can status: %d          *** ", can_update());
+        printf("y::  %d", joystick_get_raw_y());
+        printf("ACD read %d \n\r", adc_read());
         
-        /*
+        
         can_update();
         
         int motor_thrust = 0;
@@ -41,7 +44,7 @@ void game_play(MODE m)
         {
             printf("Shoot! \n\r");
             solenoid_shoot();
-        }*/
+        }
         if(adc_read() <= 100){
             printf("Sending ");
             can_write(terminate_game);
