@@ -25,7 +25,7 @@ char* menu_score_string_update(){
     
 }
 
-void oled_print_node_and_children(menu_element element, int elem_nr){
+void menu_oled_print_node_and_children(menu_element element, int elem_nr){
 
     oled_print_font(element.print, 8);
     int i = 0;
@@ -49,16 +49,14 @@ void oled_print_node_and_children(menu_element element, int elem_nr){
         i--;
     }
 }
-void update_leaderboard(int score){
+void menu_update_leaderboard(int score){
 
-    printf("score: %d \n\r", score);
     int temp_leaderboard[3];
     if(score > LEADERBOARD[0]){
         
         temp_leaderboard[1] = LEADERBOARD[0];
         temp_leaderboard[2] = LEADERBOARD[1];
         temp_leaderboard[0] = score;
-        printf("temp leaderboard: %d ", temp_leaderboard[0]);
         
     }else if(score > LEADERBOARD[1]){
         temp_leaderboard[0]= LEADERBOARD[0];
@@ -69,21 +67,46 @@ void update_leaderboard(int score){
         temp_leaderboard[1] = LEADERBOARD[1];
         temp_leaderboard[2] = score;
     }else{
-        printf("ret");
         return;
     }
     for(int i = 0; i<3;i++){
         LEADERBOARD[i]= temp_leaderboard[i];
     }
-    /*printf("LEADERBOARD[0], ", LEADERBOARD[0]);
-    printf("LEADERBOARD[1], ", LEADERBOARD[1]);
-    printf("LEADERBOARD[2] ", LEADERBOARD[2]);
-    */
 }
 
-void visual_menu(){
-      
+void menu_run(){
+    
+    char* star_wars_strings[50] = {"","","","","","","","A long time", "ago in", "a sanntidssal", "far", "far away...", "","","","","","","",};
+
     joystick_init();
+    for(int i = 0; i < 12; i++){
+        
+        for(int j = 0; j < 7; j++){
+        oled_print_font(star_wars_strings[j+i],8);
+        oled_print("\n");
+        }
+        if (joystick_get_direction())
+            _delay_ms(200);
+        else
+            _delay_ms(2000);
+        
+        oled_clear();
+    }
+
+    oled_clear();
+
+        oled_print_font("Ping pong game\n",8);
+        oled_print_font("\n \n press joystick \n to continue\n\n\n",5);
+    while(!joystick_get_button_status()){
+    }
+    while(joystick_get_button_status()){
+        ;
+    }
+    oled_clear;
+    
+
+    
+    
     
     menu_element main_menu;
     menu_element rookie;
@@ -98,13 +121,7 @@ void visual_menu(){
     play_game.children[1] = &rookie;
     play_game.nr_children = 2;
     play_game.print = "Play game";
-/*
-    game_mode.parent = &play_game;
-    game_mode.children[0] = &rookie;
-    game_mode.children[1] = &expert;
-    game_mode.nr_children = 2;
-    game_mode.print = "Select gamemode";
-*/
+
     rookie.parent = &play_game;
     rookie.children[0] = NULL;
     rookie.print = "Rookie";
@@ -120,25 +137,6 @@ void visual_menu(){
 
 
     int sec = 0;
-    /*
-    char first_place[8]; 
-    char second_place[8];
-    char third_place[8];
-
-    char string[100];
-    
-    itoa(LEADERBOARD[0], first_place, 10);
-    itoa(LEADERBOARD[1], second_place, 10);
-    itoa(LEADERBOARD[2], third_place, 10);
-
-    strcpy(string, "1. ");
-    strcat(string, first_place);
-    strcat(string, "\n2. ");
-    strcat(string, second_place);
-    strcat(string, "\n3. ");
-    strcat(string, third_place);
-    strcat(string, "\n\n");
-    */
 
     char* string = menu_score_string_update();
 
@@ -167,50 +165,46 @@ void visual_menu(){
 
     uint8_t elem_nr = 0;
     oled_clear();
-    oled_print_node_and_children(main_menu,elem_nr);
+    menu_oled_print_node_and_children(main_menu,elem_nr);
 
     menu_element current_menu_element = main_menu;
     uint8_t current_pos = 0;
     uint8_t game = 0;
     
     while(1){
-
+        
         message game_mode;
         game_mode.ID = 2;
         game_mode.length = 6;
         game_mode.data[0] = 1;
 
-
         if(joystick_get_direction() == UP && current_pos != 0 && current_menu_element.nr_children != -1){ //Joystick
-        //if(slider_get_left_button_status() && current_pos != 0 && !slider_get_right_button_status()&& current_menu_element.nr_children != -1){
             // trykk fra left button && ikke øverste element && det ikke er credits
             oled_clear();
             current_pos--;
-            oled_print_node_and_children(current_menu_element,current_pos % current_menu_element.nr_children);
-            //while(joystick_get_direction()!= NEUTRAL){
+            menu_oled_print_node_and_children(current_menu_element,current_pos % current_menu_element.nr_children);
             while(joystick_get_direction()){
                 _delay_ms(50);
                 }
         }
         
         if(joystick_get_direction() == DOWN && current_pos != current_menu_element.nr_children - 1 && current_menu_element.nr_children != 1){
-        //if(slider_get_right_button_status() && current_pos != current_menu_element.nr_children - 1 && !slider_get_left_button_status() && current_menu_element.nr_children != -1){
-            // trykk fra right button && ikke laveste elementet && ikke samtidig med left button && ikke credits siden
+               // trykk fra right button && ikke laveste elementet && ikke samtidig med left button && ikke credits siden
             oled_clear();
             current_pos++;
             
-            oled_print_node_and_children(current_menu_element,current_pos%current_menu_element.nr_children);
-            //while(joystick_get_direction()!= NEUTRAL){
+            menu_oled_print_node_and_children(current_menu_element,current_pos%current_menu_element.nr_children);
+
             while(joystick_get_direction()){
                 _delay_ms(50);}
         }
         
         if((joystick_get_direction() == RIGHT) && ((current_menu_element.nr_children != -1))){
-        //if(joystick_get_button_status()){
+
             oled_clear();
             current_menu_element = *current_menu_element.children[current_pos];
             current_pos = 0;
-            oled_print_node_and_children(main_menu,1);
+            menu_oled_print_node_and_children(main_menu,1);
 
             if(current_menu_element.print == "Rookie"){
                 game_mode.data[0] = 'R';
@@ -229,8 +223,6 @@ void visual_menu(){
                     can_send_actuator_signals();
                     sec++;
 
-                    /* **/
-
                     char seconds_string[5]; 
 
                     char score_string[100];
@@ -246,7 +238,6 @@ void visual_menu(){
                         oled_print("\n\n\n\n\n\n\n");
                     }
 
-                /****** **********/
 
 
                     if(can_check_recieved_flag()){
@@ -257,21 +248,14 @@ void visual_menu(){
                     }
                 }
 
-        /*** **/
 
 
-
-
-        /*** **/
-
-
-            update_leaderboard(sec);
+            menu_update_leaderboard(sec);
             
             char* string = menu_score_string_update();
 
     highscore.print = string;
             current_menu_element = leaderboard;
-            //sec = 0;
             
             }
             else if(current_menu_element.print == "Expert"){
@@ -290,30 +274,25 @@ void visual_menu(){
                         can_read();
                     }
                 }
-                update_leaderboard(sec);
+                menu_update_leaderboard(sec);
                 current_menu_element = leaderboard;
             }
 
             oled_clear();
-            oled_print_node_and_children(current_menu_element,current_pos);
-            //while(joystick_get_direction()!= NEUTRAL){
+            menu_oled_print_node_and_children(current_menu_element,current_pos);
             while(joystick_get_direction()){
                 _delay_ms(50);
                 }
             }
     
         if((slider_get_left_button_status()) && (current_menu_element.parent != NULL)){
-        //if(slider_get_left_button_status() && slider_get_right_button_status()){
             oled_clear();
             current_menu_element = *current_menu_element.parent;
             current_pos = 0;
-            oled_print_node_and_children(current_menu_element,current_pos);
-            //while(joystick_get_direction()!= NEUTRAL){
+            menu_oled_print_node_and_children(current_menu_element,current_pos);
             while(slider_get_left_button_status()){
                 _delay_ms(50);
             }
         }
     }
-
-    printf("SCore:  %d \n\r", sec);
 }

@@ -18,8 +18,6 @@ typedef enum gamemode{
     expert1    
 } gamemode;
 
-void menu();
-void update_leaderboard(int score);
 
 typedef struct menu_element {
     struct menu_element* parent;
@@ -29,11 +27,9 @@ typedef struct menu_element {
 } menu_element;
 
 
-void oled_print_node_and_children(menu_element element, int elem_nr);
-
-char* menu_update_leaderboard();
-
-
+void menu_run();
+void menu_update_leaderboard(int score);
+void menu_oled_print_node_and_children(menu_element element, int elem_nr);
 char* menu_score_string_update();
 
 #endif

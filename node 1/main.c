@@ -55,7 +55,7 @@ int main(){
     oled_clear();
     //printf("funker dette? \n\r");
 
-    visual_menu();
+    menu_run();
 
     while(1){
         
