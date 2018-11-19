@@ -4,25 +4,12 @@
 void motor_controller_init(){
     DDRH |= (1 << DDH4) | (1 << DDH1); // Enable motorbox with pin4 and direction with pin1
     DDRH |= (1<<DDH3) | (1<<DDH5) | (1 << DDH6); //enable encoder: PH3 = SEL, PH5 = !OE, PH6 = RST
-    PORTH |= (1 << PORTH4);
+    PORTH |= (1 << PORTH4); //Enable on
     
 }
 
 
-void motor_controller_cont(int speed){ //speed er 0 i 0, høyre er positiv, og venste er negativ. -100 til 100.
-    printf(" Speed: %d ",speed);
-
-    /*printf("rx: %d", joystick_get_raw_x());
-    if(joystick_get_raw_x() < 50){
-        printf("if");
-        PORTH |= (1 << PINH1);
-        send_voltage((magnitude - x_offset)*-1);
-    }
-    else {
-        printf("else if");
-        PORTH &= ~(1 << PINH1);
-        send_voltage(magnitude - x_offset);
-    }*/
+void motor_controller_signal(int speed){ //speed er 0 i 0, høyre er positiv, og venste er negativ. -100 til 100.
     if(speed > 10){
         PORTH |= (1<<PINH1); //right direction
         send_voltage(speed);
@@ -36,7 +23,7 @@ void motor_controller_cont(int speed){ //speed er 0 i 0, høyre er positiv, og v
     }
 }
 
-uint16_t get_encoder_data(){
+uint16_t motor_controller_get_encoder_data(){
     uint16_t data;
     cli();
     DDRK = 0x00;
@@ -54,12 +41,4 @@ uint16_t get_encoder_data(){
     sei();
 
     return data;
-}
-
-uint16_t get_position(){
-    int pos = get_encoder_data() / 87.65;
-    if (pos > 110){
-        pos = 0;
-    }
-    return pos;
 }

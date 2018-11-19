@@ -19,8 +19,6 @@
 #include "pi.h"
 #include "solenoid.h"
 #include "game.h"
-//#include "interrupt.h"
-
 
 /*
 From Aurdoino Shield: 
@@ -31,71 +29,29 @@ IR sensor -A2
 
 int main(){
 
-
-
-
     /* Initializing */
     uart_init(9600);
-    
-    printf("HEI \n\r");
     pwm_init();
     spi_init();
     can_init();
     solenoid_init();
-    //joystick_init();
     adc_init();
     dac_init();
     motor_controller_init();
     joystick_init();
-
     sei();
 
-    printf("asdasd");
-    /*
-    while(1){
-        can_update();
-
-        printf("x: %d   y: %d \n\r", RECIEVED.data[0], RECIEVED.data[1]);
-        }
-
-
-    int asd = 1;
-    */
-   PORTH &= ~(1 << PINH1); //left direction
-   send_voltage(70);
-   _delay_ms(2000);
-   get_encoder_data();
-   send_voltage(0);
-   
-
-    int asd = 1;
-    printf("før while løkka");
-   while(asd){
-    printf("Velg gamemode \n\r");
+   while(1){
     can_update();
-    
+    game_init();
     if (GAME_INFO.data[0] == 'R'){ //Checking if the game is started in rookie mode
-        printf("rookie");
         game_play(MODE_SPEED);
-        asd = 1;
         }
     else if(GAME_INFO.data[0] == 'E'){ //Checking if the game is started in Expert mode
-        printf("Expert");
         game_play(MODE_POSITION);
-        asd = 1;
         }
-    GAME_INFO.data[0] = 0;
+    GAME_INFO.data[0] = 0; //resets the game_info
     }
-
-    message nah;
-    nah.ID = 2;
-    nah.length = 1;
-    nah.data[0] = 1;
-
-    PIData_t pi;
-    PI_Init(250,10,&pi);
-
-
 
     return 0;
 }

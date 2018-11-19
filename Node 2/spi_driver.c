@@ -18,6 +18,6 @@ while(!(SPSR & (1<<SPIF))){
     }//do nothing
 }
 char spi_master_read(){
-    spi_master_write(0xFF); //Sender dummy byte
-    return SPDR; //returner registeret SPDR
+    spi_master_write(0xFF); //Sending dummy byte
+    return SPDR; //reading recieved data
 }

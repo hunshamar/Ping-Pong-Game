@@ -1,22 +1,20 @@
 #include "pwm_driver.h"
 
 void pwm_init(){
-    DDRB |= (1<<PINB5); // Setter PB5 som output
+    DDRB |= (1<<PINB5); // Setting PB5 as input
  
     TCCR1A |= (1 << WGM11);
-    TCCR1B |=  (1 << WGM12) | (1 << WGM13); //Setter til mode 14, fast PWM. Se side 145 på atmega 2560!
+    TCCR1B |=  (1 << WGM12) | (1 << WGM13); //Put the unit in mode 14, fast PWM. Checkout datasheet page 145 for more info
 
     TCCR1A |= (1 << COM1A1); 
-    TCCR1A |= (1 << COM1A0); // Setter til compare output mode, slik at OC1A er comperator mot timer/counter pulse
+    TCCR1A |= (1 << COM1A0); //Enables compare output mode, so that 0C1A is comparator to timer/counter pulse
     
-    TCCR1B |= (1<< CS12); //setter prescaler til clk/256
+    TCCR1B |= (1<< CS12); //puts prescaler to clk/256
 
-    //TIMSK0 = (1 << TOIE0); // Mulligjør interupts for hver overflow
-
-    ICR1 = 1250; //1125 er høyeste -> 2.1 ms , 1195 er lavest -> 0.9 ms
+    ICR1 = 1250; //1125 is highest -> 2.1 ms , 1195 lowest -> 0.9 ms
 }
 
-int pwm_signal(uint16_t gass){
+int pwm_signal(uint16_t gass){ //moves the servo
     if (gass >= PWMMIN && gass <= PWMMAX) {
         OCR1A = gass;
         return 1;

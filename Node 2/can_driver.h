@@ -5,11 +5,6 @@
 
 #include "Uart_driver.h"
 #include <stdio.h>
-
-
-
-
-
 typedef struct message{
     uint16_t ID;
     
@@ -17,21 +12,12 @@ typedef struct message{
     uint8_t data[8];
 }message;
 
-void can_init(); //Kjør før hver recieve
-
+void can_init();
 void can_write(message msg);
-
-
 int can_transmit_complete();
-
 message can_read();
-
 message RECIEVED; //global variabel
 message GAME_INFO;
-
 int can_update(); //Updated recieve
-
-
-
 
 #endif

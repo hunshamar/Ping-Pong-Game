@@ -23,19 +23,13 @@
 #include "pi.h"
 #include "stdint.h"
 
-
-
-
-
-
-
 /*! \brief Initialisation of pi controller parameters.
  *
  *  Initialise the variables used by the pi algorithm.
  *
  *  \param p_factor  Proportional term.
  *  \param i_factor  Integral term.
- *  \param d_factor  Derivate term.
+
  *  \param pi  Struct with pi status.
  */
 void PI_Init(int16_t p_factor, int16_t i_factor, struct pi_DATA *pi)
@@ -93,8 +87,6 @@ int16_t PI_Controller(int16_t setPoint, int16_t processValue, struct pi_DATA *pi
     pi_st->sumError = temp;
     i_term = pi_st->I_Factor * pi_st->sumError;
   }
-
-
   ret = (p_term + i_term) / SCALING_FACTOR;
   if(ret > MAX_INT){
     ret = MAX_INT;

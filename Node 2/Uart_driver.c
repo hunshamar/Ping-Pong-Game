@@ -11,7 +11,7 @@
 
 int uart_transmit(char data,FILE* fil){
     while(!(UCSR0A & (1<<UDRE0))){
-        //Mens flagget er av 
+        //while flag is not set
     }
     //send message
     UDR0 = data;
@@ -20,10 +20,8 @@ int uart_transmit(char data,FILE* fil){
 
 
 int uart_recieve(FILE* fil){
-    //UCSR0B = (1<<RXEN0); //tror det er å sette recieverflagg
     if(!(UCSR0A & (1<<RXC0))){
         return 0;
-        //Venter på noe i registeret
     }
     return UDR0;
 }
