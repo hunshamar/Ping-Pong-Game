@@ -14,9 +14,9 @@ void joystick_init(){ //Reads the offset of the joystick
 
 int joystick_get_x(){ //reads the X-coordinate from the joystick
     
-    int x = ((double)(read_adc_channel(CHANNEL_1)) - x_offset);
+    int x = ((double)(read_adc_channel(CHANNEL_1)) - x_offset); // ensures that the startvalue  is real zero
 
-    if (x >= 0){ //whats this??
+    if (x >= 0){ //Ensures that the x grows as fast on the positive as the negative side
         x /= 0.74;
     }
     else{
@@ -37,7 +37,7 @@ int joystick_get_x(){ //reads the X-coordinate from the joystick
 int joystick_get_y(){ //reads the Y-coordinate from the joystick
     int y = ((double)(read_adc_channel(CHANNEL_2)) - y_offset);
 
-    if (y >= 0){ //whats this
+    if (y >= 0){ //Ensures that y grows as fast on the positive as the negative side
         y /= 0.77;
     }
     else{
@@ -55,7 +55,7 @@ int joystick_get_y(){ //reads the Y-coordinate from the joystick
 }
 
 
-char* dir_to_string(dir d){
+char* dir_to_string(dir d){ //Useful to print the direction of the joystick
     if (d == 0) return "N";
     if (d == 1) return "R";
     if (d == 2) return "L";
@@ -65,7 +65,7 @@ char* dir_to_string(dir d){
 }
 
 
-int joystick_get_angle(){
+int joystick_get_angle(){ //calculates the angle of joystick
     
     int x = joystick_get_x();
     int y = joystick_get_y();

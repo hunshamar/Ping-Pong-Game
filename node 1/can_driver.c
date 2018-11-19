@@ -13,8 +13,8 @@ void can_init(){ //initializes the CAN bus
 }
 
 
-void can_write(message msg){
-     //Puts a message on the CAN bus
+void can_write(message msg){ //Puts a message on the CAN bus
+     
 
     //Writes the ID of the receiver to the right registers. ID is 11 bits. 8 LSB in the SIDH register, and the MSB in SIDL register
     mcp2515_write(MCP_TXB0SIDH, (uint8_t)(msg.ID >> 3)); //8 MSB
@@ -37,7 +37,7 @@ int can_transmit_complete(){ //Checks the TXB0CTRL flag if transmit is complete
     return mcp2515_check_bit(MCP_TXB0CTRL,3);
 }
 
-int can_check_recieved_flag(){
+int can_check_recieved_flag(){ //checks if the can recieved a message
     return mcp2515_check_bit(MCP_CANINTF,0);
 }
 

@@ -27,22 +27,16 @@ void oled_write_char(uint8_t character){
 
 }
 
-void oled_write_char_font(uint8_t character, uint8_t font_size){
-
+void oled_write_char_font(uint8_t character, uint8_t font_size){ //oled - print with diffrent fonts
     switch(font_size)
     {
         case 8:
             for (int i = 0; i < 8; i++){
-
                 oled_data_channel[0] = pgm_read_byte(&font8[character-32][i]);
             }
             break;
-
-        
-
         case 5:
             for (int i = 0; i < 5; i++){
-
                 oled_data_channel[0] = pgm_read_byte(&font5[character-32][i]);
             }
             for (int i = 0; i < 3; i++){
@@ -50,7 +44,6 @@ void oled_write_char_font(uint8_t character, uint8_t font_size){
                 oled_data_channel[0] = pgm_read_byte(&font5[' '-32][i]);
             }
             break;
-
         case 4:
             for (int i = 0; i < 4; i++){
 
@@ -177,45 +170,4 @@ void oled_init()
     write_command(0xaf); // display on
 } 
 
-
-
-
-
-int get_line(int y){
-
-    int line;
-    if (y == 0)
-        line = 1;
-
-    else if (y%8 == 0)
-        line = y/8;
-    else {
-        line = ((double)(y))/8;
-        line += 1; 
-    }
-    return line;
-}
-
-void oled_write_to_pixel(int x, int y){
-    
-    if (x > 128 || y > 64)
-        return;
-
-    int line = get_line(y);
-
-    int subline = get_line(y%8);   
-
-    int word = (2 << subline);
-
-
-    write_command(0b10110000 + line -1);
-
-    printf("x: %d, y: %d, line: %d, a: %d\n\r", x,y,line,subline);
-    
-    for(int i = 0; i < x-1; i++){
-        oled_write_data(i,0);
-    }
-
-    oled_write_data(x-1,word);
-}
 

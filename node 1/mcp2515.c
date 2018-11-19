@@ -34,7 +34,7 @@ int mcp2515_check_bit(uint8_t address, uint8_t bit){
     return reggie &(1<<bit);
 }
 
-void mcp2515_rts(uint8_t rts){
+void mcp2515_rts(uint8_t rts){ //request to send
     slave_select();
     spi_master_write(0x80 | rts); //Velger mellom TXB(0-2)CTRL ved å sette TXREQ bittet høyt
     slave_deselect();
@@ -58,7 +58,7 @@ uint8_t mcp2515_reset(){
 
 }
 
-void mcp2515_bit_modify(uint8_t mask, uint8_t adress, uint8_t data){
+void mcp2515_bit_modify(uint8_t mask, uint8_t adress, uint8_t data){ //changes a selection of bits
     
 
     slave_select();

@@ -125,7 +125,8 @@ void menu_run_intro(){ //Star wars intro + "ping pong game" screen
 
 
 void menu_run(){
-    
+
+    oled_clear();
     menu_run_intro();
     
     menu_element main_menu;
@@ -142,7 +143,7 @@ void menu_run(){
     play_game.nr_children = 2;
     play_game.print = "Play game";
 
-    rookie.parent = &play_game;
+    rookie.parent = &play_game;//game is over
     rookie.children[0] = NULL;
     rookie.print = "Rookie";
 
@@ -221,26 +222,30 @@ void menu_run(){
                 }
         }
         sec = 0;
-
+ 
         /* Activated when joystick goes right and there are no further rights to go*/
         if((joystick_get_direction() == RIGHT) && ((current_menu_element.nr_children != -1))){ //selects a meny option
-            
+            //game is over
             oled_clear();
             current_menu_element = *current_menu_element.children[current_pos];
             current_pos = 0;
             menu_oled_print_node_and_children(main_menu,1);
 
-            if(current_menu_element.print == "Rookie"){
-                game_mode.data[0] = 'R';
-                game = 1; // Spille spillet?
+            if(current_menu_element.print == "Rookie" || current_menu_element.print == "Expert"){
                 
-
-            
-
-                oled_clear();
-                can_write(game_mode);
-                oled_print("Playing rookie \n mode \n\n\n\n\n\n");
-                while(game){
+                if(current_menu_element.print == "Rookie"){
+                    game_mode.data[0] = 'R';
+                    oled_clear();
+                    oled_print("Playing rookie \n mode \n\n\n\n\n\n");
+                }
+                if(current_menu_element.print == "Expert"){
+                    game_mode.data[0] = 'E';
+                    oled_clear();
+                    oled_print("Playing expert \nmode \n\n\n\n\n\n");
+                }
+                can_write(game_mode); //Sending which game mode to play in node 2
+                game = 1;
+                while(game){ //Sending joystick and slider info, updating scorescreen and waiting for signal from node 2 to teminate game
                     can_send_actuator_signals();
                     sec+=2;
 
@@ -253,9 +258,9 @@ void menu_run(){
 
                     if(can_check_recieved_flag()){
                         game = 0;
-                        game_mode.data[0] = 0; //game is over
+                        game_mode.data[0] = 0; //sending game is over
                         can_write(game_mode);
-                        can_read(); //To remove the flag 
+                        can_read(); //To remove the interrupt flag 
                     }
                 }
 
@@ -267,51 +272,16 @@ void menu_run(){
                 current_menu_element = leaderboard;
             
             }
-            else if(current_menu_element.print == "Expert"){
-                game_mode.data[0] = 'E';
-                game = 1; // Play the game?
-                
-                can_write(game_mode);
-                oled_clear();
-                oled_print("Playing expert \nmode \n\n\n\n\n\n");
-void menu_
 
-                while(game){
-                    can_send_actuator_signals();
-                    sec+=2;
-
-                    score_string = menu_get_score_string(sec);
-
-                    if(sec % 100 == 0){
-                        oled_clear();
-                        oled_print(score_string);
-                        oled_print("\n\n\n\n\n\n\n");
-                    }
-
-
-                    if(can_check_recieved_flag()){
-                        game = 0;
-                        game_mode.data[0] = 0;
-                        can_write(game_mode);
-                        can_read();
-                    }
-                }
-                menu_update_leaderboard(sec);
-            
-                char* string = menu_score_string_update();
-
-                highscore.print = string;
-                current_menu_element = leaderboard;
-            }
                 
             oled_clear();
             menu_oled_print_node_and_children(current_menu_element,current_pos);
-            while(joystick_get_direction()){
+            while(joystick_get_direction()){ //waiting for the joystick to remain neutral
                 _delay_ms(50);
             }
         }
-    
-        if((slider_get_left_button_status()) && (current_menu_element.parent != NULL)){
+        // Activates when the left slider button is touched and its not the main menu
+        if((slider_get_left_button_status()) && (current_menu_element.parent != NULL)){ // goes back one menu screen 
             oled_clear();
             current_menu_element = *current_menu_element.parent;
             current_pos = 0;

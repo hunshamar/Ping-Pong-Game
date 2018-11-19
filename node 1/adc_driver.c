@@ -6,7 +6,7 @@
 #include "adc_driver.h"
 
 uint8_t read_adc_channel(adc_channel_t channel){
-    volatile char* adc_channel = (char * ) 0x1400;
+    volatile char* adc_channel = (char * ) 0x1400; //Start address for the ADC
 
     //By sending this to ADC we check single-ended voltage diff on selected channel
     adc_channel[0] = channel;

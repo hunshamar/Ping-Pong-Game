@@ -16,7 +16,7 @@ void oled_init();
 void oled_clear();
 void oled_fill();
 void oled_print(char* s);
-
+void oled_print_font(char* s, uint8_t font_size);
 
 int get_line(int y);
 

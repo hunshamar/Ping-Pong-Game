@@ -3,13 +3,8 @@
 
 #include "mcp2515.h"
 #include "joystick.h"
-
 #include "Uart_driver.h"
 #include <stdio.h>
-
-
-
-
 
 typedef struct message{
     uint16_t ID;
