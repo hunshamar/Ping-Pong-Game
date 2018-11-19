@@ -4,6 +4,7 @@
 #include<stdio.h>
 #include<math.h>
 #include<string.h>
+#include "adc_driver.h"
 
 #include <avr/io.h>
 

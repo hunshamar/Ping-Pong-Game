@@ -27,6 +27,49 @@ void oled_write_char(uint8_t character){
 
 }
 
+void oled_write_char_font(uint8_t character, uint8_t font_size){
+
+    switch(font_size)
+    {
+        case 8:
+            for (int i = 0; i < 8; i++){
+
+                oled_data_channel[0] = pgm_read_byte(&font8[character-32][i]);
+            }
+            break;
+
+        
+
+        case 5:
+            for (int i = 0; i < 5; i++){
+
+                oled_data_channel[0] = pgm_read_byte(&font5[character-32][i]);
+            }
+            for (int i = 0; i < 3; i++){
+
+                oled_data_channel[0] = pgm_read_byte(&font5[' '-32][i]);
+            }
+            break;
+
+        case 4:
+            for (int i = 0; i < 4; i++){
+
+                oled_data_channel[0] = pgm_read_byte(&font4[character-32][i]);
+            }
+            for (int i = 0; i < 4; i++){
+
+                oled_data_channel[0] = pgm_read_byte(&font5[' '-32][i]);
+            }
+            break;
+        default:
+            break;
+
+    }
+}
+
+
+
+
 void oled_print(char* s){
 
     int i= 0;
@@ -45,7 +88,32 @@ void oled_print(char* s){
         }
         else{
 
-        oled_write_char(s[i]);
+        oled_write_char_font(s[i], 5);
+        }
+        i++;
+    }
+
+}
+
+void oled_print_font(char* s, uint8_t font_size){
+    
+    int i= 0;
+    while(s[i] != 0){
+
+        if(s[i] == '\n'){
+
+            if(line == 6)
+                line = 0;
+            else
+                line += 1;
+            write_command(0b10110000 + line); 
+	        write_command(0x21); // set column address
+	        write_command(0x00);		// start address
+	        write_command(0x7f);		// end address
+        }
+        else{
+
+        oled_write_char_font(s[i], font_size);
         }
         i++;
     }

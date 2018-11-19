@@ -2,6 +2,7 @@
 #define __CAN_DRIVER__
 
 #include "mcp2515.h"
+#include "joystick.h"
 
 #include "Uart_driver.h"
 #include <stdio.h>
@@ -20,10 +21,13 @@ void can_init();
 
 void can_write(message msg);
 
+int can_check_recieved_flag();
 
 int can_transmit_complete();
 
 message can_read();
+
+void can_send_actuator_signals();
 
 
 #endif

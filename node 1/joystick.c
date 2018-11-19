@@ -1,7 +1,6 @@
 
 
 
-#include "adc_driver.h"
 #include "joystick.h"
 
 
@@ -92,8 +91,6 @@ dir joystick_get_direction(){ //reads the joystick position and returns the dire
 
     int x = joystick_get_x();
     int y = joystick_get_y();
-
-    direction where;
 
     if (x < 80 && x > -80 && y < 80 && y > -80)
         return NEUTRAL;

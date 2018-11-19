@@ -1,5 +1,6 @@
 #include "can_driver.h"
 
+
 void can_init(){ //initializes the CAN bus
 
     spi_init();
@@ -19,6 +20,7 @@ void can_write(message msg){
     mcp2515_write(MCP_TXB0SIDH, (uint8_t)(msg.ID >> 3)); //8 MSB
     mcp2515_bit_modify(0b11100000, MCP_TXB0SIDL, (uint8_t)(msg.ID << 5));  //3 LSB
 
+    printf("ID: %d", msg.ID);
     //Configures the datalength in DLC register.
     mcp2515_bit_modify(0b00001111,MCP_TXB0DLC,msg.length);
     
@@ -36,6 +38,9 @@ int can_transmit_complete(){ //Checks the TXB0CTRL flag if transmit is complete
     return mcp2515_check_bit(MCP_TXB0CTRL,3);
 }
 
+int can_check_recieved_flag(){
+    return mcp2515_check_bit(MCP_CANINTF,0);
+}
 
 message can_read(){ //reads a message from the CAN bus
     message msg;
@@ -57,4 +62,21 @@ message can_read(){ //reads a message from the CAN bus
 
 
     return msg;
+}
+
+void can_send_actuator_signals(){
+      
+    //Declare variables
+    message msg;
+    msg.ID = 1;
+    msg.length = 7;
+    msg.data[0] = read_adc_channel(CHANNEL_1); //x
+    msg.data[1] = read_adc_channel(CHANNEL_2); //y
+    msg.data[2] = joystick_get_button_status(); //joystickknapp
+    msg.data[3] = slider_get_left_pos();
+    msg.data[4] = slider_get_right_pos();
+    msg.data[5] = slider_get_left_button_status();
+    msg.data[6] = slider_get_right_button_status();
+    
+    can_write(msg);
 }

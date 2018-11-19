@@ -7,7 +7,10 @@
 
 
 void oled_write_char(uint8_t character);
+void oled_write_char_font(uint8_t character, uint8_t font_size);
+
 void oled_write_data(int channel, int data);
+
 void write_command(uint8_t command);
 void oled_init();
 void oled_clear();

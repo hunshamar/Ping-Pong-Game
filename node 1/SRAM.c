@@ -8,6 +8,7 @@ void SRAM_init(){
     MCUCR = (1<<SRE); //enables external memory interface
     SFIOR = (1<<XMM2); //External memory high mask
 }
+/*
 void SRAM_test(void)
 {
   volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM
@@ -40,4 +41,4 @@ void SRAM_test(void)
     }
   }
   printf("SRAM test completed with \n\r%4d errors in write phase and \n\r%4d errors in retrieval phase\n\n\r", write_errors, retrieval_errors);
-}
+}*/

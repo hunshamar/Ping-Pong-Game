@@ -12,7 +12,7 @@
 
 
 
-int LEADERBOARD[5];
+uint8_t LEADERBOARD[5];
 typedef enum gamemode{
     rookie1,
     expert1    
