@@ -11,7 +11,7 @@ void game_init(){ //Sends the motor over to one side for the posti
 
 void game_play(MODE m){
     PIData_t pi;
-    PI_Init(250,10,&pi);
+    PI_Init(250,5,&pi);
 
     message terminate_game;
     terminate_game.ID = 3;
@@ -24,18 +24,20 @@ void game_play(MODE m){
         int motor_thrust = 0;
         if (m == MODE_POSITION){ //Expert mode
             int position = (motor_controller_get_encoder_data()*-1)/87.65;
+            
             if (position > 300) //Ensures valid encoder data
                 position = 0;
 
             if (position > 100 && position < 300)//Ensures valid encoder data
                 position = 100;
 
-            motor_thrust = PI_Controller(slider_get_right_pos(),position,&pi);    
+            motor_thrust = PI_Controller(slider_get_left_pos(),position,&pi);   
+            
         }
         else if (m == MODE_SPEED) //Rookie mode
         {
             motor_thrust = joystick_get_x();
-            
+                        
         }
         motor_controller_signal(motor_thrust);
 
@@ -44,6 +46,8 @@ void game_play(MODE m){
         if(joystick_get_button_status()) //Solenoid action
         {
             solenoid_shoot();
+            
+            
         }
         if(adc_read() <= 100){ //Checks if the ball is blocking the IR diode
             printf("Sending teminate message");

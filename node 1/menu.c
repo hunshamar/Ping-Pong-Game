@@ -265,10 +265,11 @@ void menu_run(){
                     }
                 }
 
+                
+
                 menu_update_leaderboard(sec);
             
                 char* string = menu_score_string_update();
-
                 highscore.print = string;
                 current_menu_element = leaderboard;
             

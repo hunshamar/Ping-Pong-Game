@@ -23,7 +23,7 @@
 /*
 From Aurdoino Shield: 
 Solenoid - D10
-Motor voltage - D11
+PWM - D11
 IR sensor -A2
 */
 
