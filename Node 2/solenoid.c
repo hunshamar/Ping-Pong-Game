@@ -8,6 +8,6 @@ void solenoid_init(){
 
 void solenoid_shoot(){
     PORTB &= ~(1<<PB4); //Shoots solenoide
-    _delay_ms(1400);
+    _delay_ms(700);
     PORTB |= (1<<PB4);
 }

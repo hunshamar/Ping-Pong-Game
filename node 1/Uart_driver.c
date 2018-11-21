@@ -37,4 +37,3 @@ int uart_recieve(){
     }
     return UDR0;
 }
-

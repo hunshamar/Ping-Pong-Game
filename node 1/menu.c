@@ -194,7 +194,8 @@ void menu_run(){
     uint8_t game = 0;
 
         while(1){
-        
+        printf("Direction:          %d\n\r", joystick_get_direction());
+        printf(" Vidererføring\n\r");
         message game_mode;
         game_mode.ID = 2;
         game_mode.length = 6;
@@ -280,6 +281,7 @@ void menu_run(){
                 _delay_ms(50);
             }
         }
+        
         // Activates when the left slider button is touched and its not the main menu
         if((slider_get_left_button_status()) && (current_menu_element.parent != NULL)){ // goes back one menu screen 
             oled_clear();

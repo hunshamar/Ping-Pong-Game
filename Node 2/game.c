@@ -35,6 +35,7 @@ void game_play(MODE m){
         else if (m == MODE_SPEED) //Rookie mode
         {
             motor_thrust = joystick_get_x();
+            
         }
         motor_controller_signal(motor_thrust);
 

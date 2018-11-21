@@ -8,7 +8,7 @@ void can_init(){
     mcp2515_reset();
 
     mcp2515_bit_modify(0x60, MCP_RXB1CTRL, 0b01100000); //recieve buffer 0 control 
-    mcp2515_bit_modify(0b10, MCP_CANINTE, 0b00000010); //sier at RXoIF flagget skal bli høyt ved å sette RX0IE verdien i CANINTE registeret høyt 
+    mcp2515_bit_modify(0b1, MCP_CANINTE, 0b00000001); //sier at RXoIF flagget skal bli høyt ved å sette RX0IE verdien i CANINTE registeret høyt 
     mcp2515_bit_modify(0b11100000,MCP_CANCTRL,MODE_NORMAL); //sett til normalmode
 }
 
@@ -33,16 +33,16 @@ int can_transmit_complete(){
 
 message can_read(){
     message msg;
-    if(mcp2515_check_bit(MCP_CANINTF,1)){
-        uint8_t ID_high = mcp2515_read(MCP_RXB1SIDH);
-        uint8_t ID_low = mcp2515_read(MCP_RXB1SIDL);
+    if(mcp2515_check_bit(MCP_CANINTF,0)){
+        uint8_t ID_high = mcp2515_read(MCP_RXB0SIDH);
+        uint8_t ID_low = mcp2515_read(MCP_RXB0SIDL);
         msg.ID = (ID_high << 3) | (ID_low >> 5); //11 bit adresse
 
-        msg.length = mcp2515_read(MCP_RXB1DLC) & 0x0F; //Reads 4 lsb
+        msg.length = mcp2515_read(MCP_RXB0DLC) & 0x0F; //Reads 4 lsb
         if(msg.length > 8) // controlling if it is larger than a byte
             msg.length = 8;
         for (int l = 0; l < msg.length; l++){
-            msg.data[l] = mcp2515_read(MCP_RXB1D0 + l);
+            msg.data[l] = mcp2515_read(MCP_RXB0D0 + l);
         }
         mcp2515_bit_modify(0b00000011,MCP_CANINTF,0b0); //turns off the recieved flag
     }
@@ -54,7 +54,7 @@ message can_read(){
 
 
 int can_update(){
-    if (mcp2515_check_bit(MCP_CANINTF,1)){ //aquiered a new message on the can bus
+    if (mcp2515_check_bit(MCP_CANINTF,0)){ //aquiered a new message on the can bus
         message r = can_read();
         if (r.ID == 1){
             RECIEVED = r; //updates the global variables
