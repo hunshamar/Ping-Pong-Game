@@ -11,12 +11,12 @@ void pwm_init(){
     
     TCCR1B |= (1<< CS12); //puts prescaler to clk/256
 
-    ICR1 = 1250; //1125 is highest -> 2.1 ms , 1195 lowest -> 0.9 ms
+    ICR1 = 1250; //1125 is highest -> 2.1 ms , 1195 lowest -> 0.9 ms. SEt top?
 }
 
 int pwm_signal(uint16_t gass){ //moves the servo
     if (gass >= PWMMIN && gass <= PWMMAX) {
-        OCR1A = gass;
+        OCR1A = gass; // 146
         return 1;
     }
     else{ 
